@@ -2,7 +2,6 @@
     background-image: url('../Imgs/fondoAuth.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -10,7 +9,7 @@
 }
 
 .formulario {
-    margin:5vh;
+    margin: 5vh;
     max-width: 20%;
     padding: 5%;
     flex-direction: row;

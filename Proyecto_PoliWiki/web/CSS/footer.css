@@ -35,13 +35,13 @@ footer {
 
     p {
         color: #FFFFFF;
-        font-size: 8px;
+        font-size: 14px;
     }
 
     a,
     li {
         color: #FFFFFF;
-        font-size: 8px;
+        font-size: 12px;
         list-style-type: none;
         text-decoration: none;
     }

@@ -51,4 +51,8 @@ p.contenido {
     margin: 0;
     padding: 0;
     width: 30%;
+    img{
+        border-radius: 80px;
+    }
+
 }
