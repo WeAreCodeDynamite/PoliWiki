@@ -15,14 +15,14 @@
                 <img src="Imgs/logo_PoliWiki.jpeg">
                 <h1>Inicia sesión</h1>
                 <p>Completa tus datos para unirte a PoliWiki</p>
-                <form>
-                    <label for="nombre">Boleta o correo: </label>
+                <form action="Controlador/procesarInicioSesion.jsp" method="post">
+                    <label for="nombre">Correo: </label>
                     <br>
-                    <input id="nombre" type="text" placeholder="Boleta o correo: ">
+                    <input id="nombre" type="text" placeholder="Correo: " name="correo">
                     <br>
-                    <label for="confirmacontra">Contraseña: </label>
+                    <label for="contra">Contraseña: </label>
                     <br>
-                    <input type="password" name="contra" id="confirmacontra" placeholder="Ingresa tu contraseña">
+                    <input type="password" name="contra" id="contra" placeholder="Ingresa tu contraseña">
                     <br>
                     <input type="submit" value="Iniciar sesión" id="submit">
                 </form>

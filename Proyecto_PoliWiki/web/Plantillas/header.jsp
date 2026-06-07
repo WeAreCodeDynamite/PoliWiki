@@ -20,7 +20,20 @@
     </form>
 
     <div class="auth">
-        <a class="login" href="iniciarSesion.jsp">Iniciar Sesión</a>
-        <a class="signup" href="crearCuenta.jsp">Crear cuenta</a>
+        <% 
+        if(session.getAttribute("nombre") == null){
+            out.println("<a class=\"login\" href=\"iniciarSesion.jsp\">Iniciar Sesión</a>");
+            out.println("<a class=\"signup\" href=\"crearCuenta.jsp\">Crear cuenta</a>");
+        }else{
+        String nombre = session.getAttribute("nombre").toString();
+        String apellidoṔaterno = session.getAttribute("apellidoPaterno").toString();
+        String apellidoMaterno = session.getAttribute("apellidoMaterno").toString();
+        String correoElectronico = session.getAttribute("correoElectronico").toString();
+        
+        out.println("<h6>" + nombre + " " + apellidoṔaterno + " " + apellidoMaterno + "</h6" );
+        out.println("<p>" + correoElectronico + "</p" );
+        }
+        %>
+        
     </div>
 </header>

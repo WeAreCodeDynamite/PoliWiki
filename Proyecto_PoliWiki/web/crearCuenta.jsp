@@ -15,45 +15,46 @@
                 <img src="Imgs/logo_PoliWiki.jpeg">
                 <h1>Crear cuenta</h1>
                 <p>Completa tus datos para unirte a PoliWiki</p>
-                <form>
+                <form action="Controlador/crearCuenta.jsp" method="post">
                     <div>
                         <label for="nombre">Nombre(s): </label>
                         <br>
-                        <input id="nombre" type="text" placeholder="Tu nombre(s)">
+                        <input name="nombre" id="nombre" type="text" placeholder="Tu nombre(s)">
                     </div>
                     <div>
-                        <label for="apellidoPaterno">Apellido Paterno:</label>
-                        <input id="apellidoPaterno" type="text" placeholder="Tu apellido paterno">
+                        <label for="apellidoPaterno">Apellido materno:</label>
+                        <input name="apellidoPaterno" id="apellidoPaterno" type="text" placeholder="Tu apellido paterno">
                     </div>
-                    <br>
                     <div>
                         <label for="apellidoMaterno">
-                            Apellido Materno:
+                            Apellido materno:
                         </label>
-                        <input id="apellidoMaterno" type="text" placeholder="Tu apellido materno">
+                        <input name="apellidoMaterno" id="apellidoMaterno" type="text" placeholder="Tu apellido materno">
                     </div>
-                    <br>
                     <div>
                         <label for="email">Correo institucional: </label>
                         <input type="email" name="correo" id="email" placeholder="ejemplo@alumno.ipn.mx">
                     </div>
                     <div>
                         <label for="boleta">Número de boleta: </label>
-                        <input type="number" id="boleta" placeholder="Boleta">
+                        <input name="boleta" type="text" id="boleta" placeholder="Boleta">
                     </div>
                     <div>
                         <label for="carrera">Carrera</label>
-                        <select id="carrera">
+                        <select name="carrera" id="carrera">
                             <option disabled selected>Selecciona tu carrera</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="contrasena">Contraseña: </label>
+                        <input type="password" name="contrasena" id="contra">
+                    </div>
+                    <div>
+                        <label for="confirmacontrasena">Confirmar contraseña: </label>
+                        <input type="password" name="confirmarcontrasena" id="confirmacontra">
+                    </div>
                     <br>
-                    <label for="contra">Contraseña: </label>
-                    <input type="password" name="contra" id="contra">
-                    <br>
-                    <label for="confirmacontra">Confirmar contraseña: </label>
-                    <input type="password" name="contra" id="confirmacontra">
-
+                    
                     <input type="submit" value="Crear cuenta" id="submit">
                 </form>
             </div>

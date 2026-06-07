@@ -20,9 +20,4 @@
           <listener-class>com.mycompany.TagLibListener</listener-class> 
       </listener>
     -->
-  <tag>
-    <name>PaginaBase</name>
-    <tag-class>PaginaBase</tag-class>
-    <body-content>scriptless</body-content>
-  </tag>
 </taglib>
