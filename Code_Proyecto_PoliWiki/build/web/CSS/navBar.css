@@ -1,0 +1,41 @@
+nav {
+    width: 100wh;
+    height: 0.5rem;
+    margin: 0;
+    padding: 1rem;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+
+    img {
+        width: 10%;
+    }
+
+
+
+    a {
+        position: relative;
+        font-weight: bold;
+        text-decoration: none;
+        color: #5A1236;
+        padding: 0.3rem;
+    }
+
+    a:hover {
+        border-bottom: solid #5A1236 1px;
+    }
+
+    #info {
+        border-left: none;
+    }
+
+    .navLinks {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+    }
+}

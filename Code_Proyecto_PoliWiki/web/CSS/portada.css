@@ -1,0 +1,58 @@
+.contenidoPrincipal {
+    display: flex;
+    align-items: center;
+    min-height: 650px;
+    padding: 60px;
+    background: #fff;
+}
+
+.contenido {
+    width: 40%;
+    margin: 0;
+    padding: 0;
+}
+
+.contenido h2 {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.subtitulo {
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+p.contenido {
+    font-size: 20px;
+    color: #444;
+    line-height: 1.6;
+}
+
+.explorar {
+    padding: 0.5rem;
+    width: 30%;
+    text-decoration: none;
+    border: solid 1px #5A1236;
+    color: #5A1236;
+    border-radius: 15px;
+}
+
+.conocer{
+    padding: 0.5rem;
+    width: 30%;
+    text-decoration: none;
+    border: solid 1px #5A1236;
+    background-color: #5A1236;
+    color: #FFFFFF;
+    border-radius: 15px;
+}
+
+.imagen {
+    margin: 0;
+    padding: 0;
+    width: 30%;
+    img{
+        border-radius: 80px;
+    }
+
+}
