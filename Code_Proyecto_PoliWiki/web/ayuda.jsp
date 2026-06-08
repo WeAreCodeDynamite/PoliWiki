@@ -9,7 +9,8 @@
     <body>
         <%@include file="/Plantillas/header.jsp" %>
         <%@include file="/Plantillas/navBar.jsp" %>
-        <p>Por el momento no hay tramites</p>
+        <h1>Contáctanos</h1>
+        <a href="mailto:contactopoliwiki@gmail.com ">contactopoliwiki@gmail.com </a>
         <%@include file="/Plantillas/footer.jsp" %>
     </body>
 </html>

@@ -27,7 +27,7 @@
             <a class="login" href="iniciarSesion.jsp">Iniciar Sesión</a>
             <a class="signup" href="crearCuenta.jsp">Crear cuenta</a>
         <% } else { %>
-            <span class="login">Hola, <%= usuarioHeader.getNombres() %></span>
+            <div>Hola, <%= usuarioHeader.getNombres() %></div>
             <a class="signup" href="logout">Cerrar sesión</a>
         <% } %>
     </div>
