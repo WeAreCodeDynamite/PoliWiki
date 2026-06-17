@@ -29,7 +29,7 @@ public class EliminarProfesorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. CONTROL DE ACCESO: Validar sesión activa
+        
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("usuario") == null) { 
             String msg = "Debes iniciar sesión para eliminar un profesor.";
@@ -54,8 +54,7 @@ public class EliminarProfesorServlet extends HttpServlet {
             CatalogoDao catalogoDao = new CatalogoDao();
             boolean exito = false;
 
-            // 3. VALIDACIÓN DE PERMISOS (LÓGICA DE NEGOCIO)
-            // Si el rol es Administrador (ajusta el String según lo tengas en tu BD, ej: "1", "Administrador", "admin")
+            
             if (rolUsuario != null && (rolUsuario.equalsIgnoreCase("Administrador") || rolUsuario.equalsIgnoreCase("admin") || rolUsuario.equals("1"))) {
                 // El administrador tiene súper poderes: pasamos un valor comodín o usamos una sobrecarga en tu DAO si existiera.
                 // Si tu DAO actual requiere estrictamente el ID del creador en el SQL, lo ideal es crear un método en tu CatalogoDao 

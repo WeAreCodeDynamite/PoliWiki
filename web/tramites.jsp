@@ -16,7 +16,6 @@
     Usuario usuarioLogueado = (Usuario) session.getAttribute("usuario");
     boolean esAdmin = (usuarioLogueado != null && "administrador".equals(usuarioLogueado.getRol()));
     
-    // Obtener contexto de la app para asegurar las rutas de redirección en JavaScript
     String contextPath = request.getContextPath();
 %>
 <!DOCTYPE html>

@@ -3,16 +3,24 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="java.util.Set"%>
+<%@page import="poliwiki.model.Usuario"%>
 <%
-    // Verificamos si el usuario ha iniciado sesión
-    boolean usuarioLogueado = (session.getAttribute("usuario") != null);
+    Usuario usuarioSesion = (session.getAttribute("usuario") != null) ? (Usuario) session.getAttribute("usuario") : null;
+    boolean usuarioLogueado = (usuarioSesion != null);
+    
+    int idUsuarioLogueado = usuarioLogueado ? usuarioSesion.getId() : -1;
+    
+    boolean esAdmin = usuarioLogueado ? "Administrador".equalsIgnoreCase(usuarioSesion.getRol()) : false;
 
-    // Recibimos los datos procesados previamente por el EventosServlet
     List<Map<String, Object>> eventos = (List<Map<String, Object>>) request.getAttribute("eventos");
     List<Map<String, Object>> favoritos = (List<Map<String, Object>>) request.getAttribute("favoritos");
     String errorCarga = (String) request.getAttribute("errorCarga");
 
-    // Usamos Set<String> para evitar conflictos de casteo (Integer vs Long) de la BD
+    Map<String, Object> evEditar = (Map<String, Object>) request.getAttribute("eventoEditar");
+    boolean esEdicion = (evEditar != null);
+
+    boolean eventoCreado = "true".equals(request.getAttribute("eventoCreado"));
+
     Set<String> idsFavoritos = new HashSet<String>();
     if (favoritos != null) {
         for (Map<String, Object> fav : favoritos) {
@@ -22,6 +30,7 @@
         }
     }
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,6 +39,7 @@
         <link href="CSS/estiloBase.css" rel="stylesheet" />
         <link href="CSS/eventos.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
         
         <style>
             .mini-evento.oculto {
@@ -52,10 +62,58 @@
             }
             .warning-content {
                 background: white;
-                padding: 20px;
+                padding: 24px;
                 border-radius: 15px;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.2);
                 position: relative;
+                box-sizing: border-box;
+            }
+            .form-inline-eliminar {
+                display: inline;
+                margin: 0;
+                padding: 0;
+            }
+            .btn-link-eliminar {
+                background: none;
+                border: none;
+                color: #dc3545;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 0.9rem;
+                padding: 0;
+            }
+            .btn-link-eliminar:hover {
+                text-decoration: underline;
+            }
+
+            .modal-alert-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            .modal-alert-btn {
+                padding: 10px 20px;
+                border-radius: 20px;
+                border: none;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 0.95rem;
+                transition: background 0.2s;
+            }
+            .modal-alert-btn-danger {
+                background-color: #d32f2f;
+                color: white;
+            }
+            .modal-alert-btn-danger:hover {
+                background-color: #b71c1c;
+            }
+            .modal-alert-btn-secondary {
+                background-color: #e0e0e0;
+                color: #333;
+            }
+            .modal-alert-btn-secondary:hover {
+                background-color: #bdbdbd;
             }
         </style>
     </head>
@@ -129,6 +187,10 @@
                                 
                                 String idEventoStr = (evento.get("id_evento") != null) ? evento.get("id_evento").toString().trim() : "";
                                 boolean esFavorito = idsFavoritos.contains(idEventoStr);
+
+                                int creadoPor = (evento.get("id_usuario") != null) ? Integer.parseInt(evento.get("id_usuario").toString()) : 0;
+                                
+                                boolean puedeEditarEliminar = esAdmin || (usuarioLogueado && idUsuarioLogueado == creadoPor);
                         %>
                                 <article class="card-evento-horizontal">
                                     <div class="card-imagen" style="background-image: url('<%= imagenUrl %>');"></div>
@@ -142,6 +204,22 @@
                                             <span><i class="fa-solid fa-location-dot"></i> <%= lugar %></span>
                                             <span><i class="fa-solid fa-users"></i> <%= audiencia %></span>
                                         </div>
+
+                                        <% if (puedeEditarEliminar) { %>
+                                            <div class="acciones-creador" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
+                                                <a href="EventosServlet?accion=pantallaEditar&id_evento=<%= idEvento %>" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                                </a>
+                                                
+                                                <form action="EventosServlet" method="POST" class="form-inline-eliminar form-eliminar-evento">
+                                                    <input type="hidden" name="accion" value="eliminarEvento">
+                                                    <input type="hidden" name="id_evento" value="<%= idEvento %>">
+                                                    <button type="button" class="btn-link-eliminar btn-disparar-eliminar">
+                                                        <i class="fa-solid fa-trash"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        <% } %>
                                     </div>
                                     
                                     <div class="card-fecha-accion">
@@ -244,67 +322,86 @@
             </div>
         </main>
 
-        <%-- Modal Formulario para añadir eventos --%>
         <div id="modalEventos" class="modal-container">
             <div class="modal-contenido">
                 <div class="modal-header-form">
-                    <h2>Agregar Nuevo Evento</h2>
-                    <p><i class="fa-solid fa-calendar-plus"></i> Crear Nuevo Perfil de Evento</p>
+                    <h2><%= esEdicion ? "Modificar Evento Seleccionado" : "Agregar Nuevo Evento" %></h2>
+                    <p><i class="fa-solid <%= esEdicion ? "fa-pen-to-square" : "fa-calendar-plus" %>"></i> <%= esEdicion ? "Editar Perfil del Evento" : "Crear Nuevo Perfil de Evento" %></p>
                     <span class="btn-cerrar-modal" id="btnCerrarModal">&times;</span>
                 </div>
                 
                 <form action="EventosServlet" method="POST" id="formNuevoEvento">
-                    <input type="hidden" name="accion" value="crearEvento">
+                    <input type="hidden" name="accion" value="<%= esEdicion ? "modificarEvento" : "crearEvento" %>">
+                    
+                    <% if(esEdicion) { %>
+                        <input type="hidden" name="id_evento" value="<%= evEditar.get("id_evento") %>">
+                    <% } %>
                     
                     <div class="grupo-formulario">
                         <label for="tituloEvento">Título del Evento</label>
-                        <input type="text" name="titulo" id="tituloEvento" placeholder="Ej. Gran Torneo de Ajedrez PoliWiki" required>
+                        <input type="text" name="titulo" id="tituloEvento" placeholder="Ej. Gran Torneo de Ajedrez PoliWiki" value="<%= esEdicion ? evEditar.get("titulo") : "" %>" required>
                     </div>
 
                     <div class="grupo-formulario">
                         <label for="tipoEvento">Tipo de Evento</label>
                         <select name="tipo" id="tipoEvento" required>
-                            <option value="" disabled selected>Selecciona tipo de evento...</option>
-                            <option value="Torneo">Torneo</option>
-                            <option value="Competencia">Competencia</option>
-                            <option value="Interpolitecnico">Interpolitécnico</option>
-                            <option value="Academico">Académico</option>
-                            <option value="Ludico">Lúdico</option>
+                            <option value="" disabled <%= !esEdicion ? "selected" : "" %>>Selecciona tipo de evento...</option>
+                            <option value="Torneo" <%= esEdicion && "Torneo".equalsIgnoreCase(evEditar.get("tipo").toString()) ? "selected" : "" %>>Torneo</option>
+                            <option value="Competencia" <%= esEdicion && "Competencia".equalsIgnoreCase(evEditar.get("tipo").toString()) ? "selected" : "" %>>Competencia</option>
+                            <option value="Interpolitecnico" <%= esEdicion && "Interpolitecnico".equalsIgnoreCase(evEditar.get("tipo").toString()) ? "selected" : "" %>>Interpolitécnico</option>
+                            <option value="Academico" <%= esEdicion && "Academico".equalsIgnoreCase(evEditar.get("tipo").toString()) ? "selected" : "" %>>Académico</option>
+                            <option value="Ludico" <%= esEdicion && "Ludico".equalsIgnoreCase(evEditar.get("tipo").toString()) ? "selected" : "" %>>Lúdico</option>
                         </select>
                     </div>
 
                     <div class="grupo-formulario-doble">
                         <div class="grupo-formulario">
                             <label for="fechaEvento">Fecha</label>
-                            <input type="date" name="fecha" id="fechaEvento" required>
+                            <% 
+                                String fechaFormateada = "";
+                                if(esEdicion && evEditar.get("inicia_en") != null){
+                                    fechaFormateada = evEditar.get("inicia_en").toString().substring(0, 10);
+                                }
+                            %>
+                            <input type="date" name="fecha" id="fechaEvento" value="<%= fechaFormateada %>" required>
                         </div>
                         <div class="grupo-formulario">
                             <label for="horaEvento">Hora</label>
-                            <input type="time" name="hora" id="horaEvento" required>
+                            <% 
+                                String horaFormateadaInput = "";
+                                if(esEdicion && evEditar.get("inicia_en") != null){
+                                    horaFormateadaInput = evEditar.get("inicia_en").toString().substring(11, 16);
+                                }
+                            %>
+                            <input type="time" name="hora" id="horaEvento" value="<%= horaFormateadaInput %>" required>
                         </div>
                     </div>
 
                     <div class="grupo-formulario">
                         <label for="lugarEvento">Lugar</label>
-                        <input type="text" name="lugar" id="lugarEvento" placeholder="Ej. Auditorio, Gimnasio Central..." required>
+                        <input type="text" name="lugar" id="lugarEvento" placeholder="Ej. Auditorio, Gimnasio Central..." value="<%= esEdicion ? evEditar.get("lugar") : "" %>" required>
                     </div>
 
                     <div class="grupo-formulario">
                         <label for="audienciaEvento">¿Quiénes pueden ir?</label>
-                        <input type="text" name="audiencia" id="audienciaEvento" placeholder="Ej. Alumnos del CECyT, Todo público..." required>
+                        <input type="text" name="audiencia" id="audienciaEvento" placeholder="Ej. Alumnos del CECyT, Todo público..." value="<%= esEdicion ? evEditar.get("audiencia") : "" %>" required>
                     </div>
 
                     <div class="grupo-formulario">
                         <label for="descripcionEvento">Descripción del evento</label>
-                        <textarea name="descripcion" id="descripcionEvento" rows="4" placeholder="Escribe los detalles importantes..." required></textarea>
+                        <textarea name="descripcion" id="descripcionEvento" rows="4" placeholder="Escribe los detalles importantes..." required><%= esEdicion ? evEditar.get("descripcion") : "" %></textarea>
                     </div>
 
-                    <button type="submit" class="btn-guardar-form">Publicar</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button type="submit" class="btn-guardar-form"><%= esEdicion ? "Guardar Cambios" : "Publicar" %></button>
+                        <% if(esEdicion) { %>
+                            <a href="EventosServlet" style="color: #666; text-decoration: none; font-size: 0.9rem; margin-left: 10px;">Cancelar Edición</a>
+                        <% } %>
+                    </div>
                 </form>
             </div>
         </div>
 
-        <%-- Modal de Advertencia --%>
         <div id="modalLoginWarning" class="modal-overlay" style="display: none;">
             <div class="modal-content warning-content" style="text-align: center; max-width: 450px;">
                 <span id="btnCerrarWarning" style="float: right; cursor: pointer; font-size: 1.5rem; font-weight: bold;">&times;</span>
@@ -323,14 +420,59 @@
             </div>
         </div>
 
+        <div id="modalConfirmarEliminar" class="modal-overlay" style="display: none;">
+            <div class="warning-content" style="border-top: 5px solid #d32f2f; max-width: 450px; width: 100%;">
+                <span style="float: right; cursor: pointer; font-size: 1.5rem;" onclick="cerrarModalConfirmar()">&times;</span>
+                <div style="margin-top: 15px; text-align: center;">
+                    <span class="material-icons-outlined" style="font-size: 4rem; color: #d32f2f;">delete_forever</span>
+                </div>
+                <h2 style="color: #333; margin-top: 10px; font-size: 1.5rem; text-align: center;">¿Estás seguro?</h2>
+                <p style="color: #666; text-align: center; margin-bottom: 20px;">¿Deseas eliminar este evento de forma permanente? Esta acción no se puede deshacer.</p>
+                
+                <div class="modal-alert-actions">
+                    <button class="modal-alert-btn modal-alert-btn-danger" id="btnConfirmarEliminarSiniestro">Eliminar</button>
+                    <button class="modal-alert-btn modal-alert-btn-secondary" onclick="cerrarModalConfirmar()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalExitoEvento" class="modal-overlay" style="display: none;">
+            <div class="warning-content" style="border-top: 5px solid #800020; max-width: 450px; width: 100%; text-align: center;">
+                <span style="float: right; cursor: pointer; font-size: 1.5rem; font-weight: bold;" onclick="cerrarModalExito()">&times;</span>
+                <div style="margin-top: 15px;">
+                    <span class="material-icons-outlined" style="font-size: 4rem; color: #2e7d32;">check_circle</span>
+                </div>
+                <h2 style="color: #800020; margin-top: 10px;">¡Excelente!</h2>
+                <p id="modalExitoTexto" style="color: #666; margin-bottom: 20px;">¡Publicación creada con éxito!</p>
+                <div class="modal-alert-actions">
+                    <button class="modal-alert-btn" style="background-color: #800020; color: white;" onclick="cerrarModalExito()">Entendido</button>
+                </div>
+            </div>
+        </div>
+
         <script>
             const isLoggedIn = <%= usuarioLogueado %>;
+            const esEdicionJS = <%= esEdicion %>;
+            const eventoCreadoJS = <%= eventoCreado %>;
 
             const modal = document.getElementById("modalEventos");
             const modalWarning = document.getElementById("modalLoginWarning");
+            const modalEliminar = document.getElementById("modalConfirmarEliminar");
+            const modalExito = document.getElementById("modalExitoEvento");
+            
             const btnAbrir = document.getElementById("btnAbrirModalEventos");
             const btnCerrar = document.getElementById("btnCerrarModal");
             const btnCerrarWarning = document.getElementById("btnCerrarWarning");
+            
+            let formularioAEliminar = null;
+
+            if (esEdicionJS) {
+                modal.style.display = "flex";
+            }
+
+            if (eventoCreadoJS) {
+                modalExito.style.display = "flex";
+            }
 
             btnAbrir.addEventListener("click", () => {
                 if (isLoggedIn) {
@@ -342,22 +484,53 @@
 
             btnCerrar.addEventListener("click", () => {
                 modal.style.display = "none";
+                if(esEdicionJS) {
+                    window.location.href = "EventosServlet"; 
+                }
             });
 
             btnCerrarWarning.addEventListener("click", () => {
                 modalWarning.style.display = "none";
             });
 
+            function cerrarModalExito() {
+                modalExito.style.display = "none";
+            }
+
+            function cerrarModalConfirmar() {
+                modalEliminar.style.display = "none";
+                formularioAEliminar = null;
+            }
+
+            document.querySelectorAll('.btn-disparar-eliminar').forEach(boton => {
+                boton.addEventListener('click', function(e) {
+                    formularioAEliminar = this.closest('.form-eliminar-evento');
+                    modalEliminar.style.display = "flex";
+                });
+            });
+
+            document.getElementById('btnConfirmarEliminarSiniestro').addEventListener('click', function() {
+                if (formularioAEliminar) {
+                    formularioAEliminar.submit();
+                }
+            });
+
             window.addEventListener("click", (e) => {
                 if (e.target === modal) {
                     modal.style.display = "none";
+                    if(esEdicionJS) window.location.href = "EventosServlet";
                 }
                 if (e.target === modalWarning) {
                     modalWarning.style.display = "none";
                 }
+                if (e.target === modalEliminar) {
+                    cerrarModalConfirmar();
+                }
+                if (e.target === modalExito) {
+                    cerrarModalExito();
+                }
             });
 
-            // AJAX para Favoritos
             document.querySelectorAll('.btn-guardar').forEach(boton => {
                 boton.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -403,7 +576,6 @@
                 });
             });
 
-            // Toggle "Ver todos"
             const btnVerTodosMini = document.getElementById("btnVerTodosMini");
             if(btnVerTodosMini) {
                 btnVerTodosMini.addEventListener("click", function() {
@@ -424,7 +596,6 @@
                 });
             }
 
-            // Buscador en tiempo real
             const inputBuscar = document.getElementById("inputBuscar");
             if (inputBuscar) {
                 inputBuscar.addEventListener("input", function() {
