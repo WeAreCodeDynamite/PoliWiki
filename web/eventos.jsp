@@ -207,7 +207,7 @@
 
                                         <% if (puedeEditarEliminar) { %>
                                             <div class="acciones-creador" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
-                                                <a href="EventosServlet?accion=pantallaEditar&id_evento=<%= idEvento %>" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+                                                <a href="EventosServlet?accion=pantallaEditar&id_evento=<%= idEvento %>" style="color: #0056b3; text-decoration: none; font-size: 0.9rem;">
                                                     <i class="fa-solid fa-pen-to-square"></i> Editar
                                                 </a>
                                                 

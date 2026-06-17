@@ -390,16 +390,13 @@
                 document.getElementById('precio').value = precio;
                 document.getElementById('escuela').value = escuela;
                 
-                // Limpiar los tags de la descripción si venían con el formato [Tema]
                 let descLimpia = descripcion.replace(/^\[.*?\]\s*/, '');
                 document.getElementById('descripcion').value = descLimpia;
                 
-                // Ocultamos el tema en la edición dado que el servlet ya tiene la lógica estructurada
                 document.getElementById('contenedorTema').style.display = 'none';
                 document.getElementById('tema').required = false;
                 document.getElementById('tema').value = "Edicion"; 
 
-                // Forzar visualización del modal apuntando al ID contenedor
                 window.location.hash = "modalCrear";
             }
 
