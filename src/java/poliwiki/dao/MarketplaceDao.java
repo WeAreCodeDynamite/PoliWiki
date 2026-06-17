@@ -11,9 +11,7 @@ import poliwiki.util.DbRows;
 
 public class MarketplaceDao {
 
-    /**
-     * Busca las siglas de la escuela a la que pertenece el usuario de forma dinámica.
-     */
+    
     public String obtenerEscuelaPorUsuario(Integer idUsuario) throws SQLException {
         String sql = "SELECT e.siglas FROM usuarios u "
                    + "JOIN carreras c ON u.id_carrera = c.id_carrera "
@@ -46,14 +44,30 @@ public class MarketplaceDao {
         }
     }
 
-    // =========================================================================
-    // LISTAR MARKETPLACE GENERAL (Público)
-    // =========================================================================
+    /**
+     * Actualiza los datos de un artículo existente en el marketplace.
+     * Este es el método que solucionará el error en tu Servlet.
+     */
+    public void actualizarItem(int idItem, String titulo, String descripcion, double precio, String fotoUrl, String escuela) throws SQLException {
+        String sql = "UPDATE marketplace_items SET titulo = ?, descripcion = ?, precio = ?, foto_url = ?, escuela = ? WHERE id_item = ?";
+        
+        try (Connection cn = Database.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, titulo);
+            ps.setString(2, descripcion);
+            ps.setDouble(3, precio);
+            ps.setString(4, fotoUrl);
+            ps.setString(5, escuela);
+            ps.setInt(6, idItem);
+            ps.executeUpdate();
+        }
+    }
+
     public List<Map<String, Object>> listarMarketplace() throws SQLException {
-        String sql = "SELECT mi.id_item, mi.titulo, mi.descripcion, mi.precio, mi.estado, mi.creado_en, mi.foto_url, mi.escuela, "
+        String sql = "SELECT mi.id_item, mi.id_usuario, mi.titulo, mi.descripcion, mi.precio, mi.estado, mi.creado_en, mi.foto_url, mi.escuela, "
                 + "COALESCE(CONCAT(u.nombres, ' ', LEFT(u.apellido_paterno, 1), '.'), 'Invitado') AS vendedor "
                 + "FROM marketplace_items mi LEFT JOIN usuarios u ON u.id_usuario = mi.id_usuario "
-                + "WHERE mi.estado <> 'eliminado' " // <-- CORRECCIÓN: No muestra los productos eliminados lógicamente
+                + "WHERE mi.estado <> 'eliminado' "
                 + "ORDER BY mi.creado_en DESC";
         
         try (Connection cn = Database.getConnection();
@@ -63,14 +77,11 @@ public class MarketplaceDao {
         }
     }
 
-    /**
-     * Obtiene una sola publicación del marketplace por su id_item
-     */
     public Map<String, Object> obtenerItemPorId(Integer idItem) throws SQLException {
-        String sql = "SELECT mi.id_item, mi.titulo, mi.descripcion, mi.precio, mi.estado, mi.creado_en, mi.foto_url, mi.escuela, "
+        String sql = "SELECT mi.id_item, mi.id_usuario, mi.titulo, mi.descripcion, mi.precio, mi.estado, mi.creado_en, mi.foto_url, mi.escuela, "
                 + "COALESCE(CONCAT(u.nombres, ' ', LEFT(u.apellido_paterno, 1), '.'), 'Invitado') AS vendedor "
                 + "FROM marketplace_items mi LEFT JOIN usuarios u ON u.id_usuario = mi.id_usuario "
-                + "WHERE mi.id_item = ? AND mi.estado <> 'eliminado'"; // <-- CORRECCIÓN: Protege el detalle si el producto fue removido
+                + "WHERE mi.id_item = ? AND mi.estado <> 'eliminado'";
         
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -83,6 +94,15 @@ public class MarketplaceDao {
             }
         }
         return null;
+    }
+
+    public void eliminarItem(int idItem) throws SQLException {
+        String sql = "UPDATE marketplace_items SET estado = 'eliminado' WHERE id_item = ?";
+        try (Connection cn = Database.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idItem);
+            ps.executeUpdate();
+        }
     }
 
     public boolean guardarPregunta(int idItem, String usuario, String comentario) {

@@ -39,9 +39,9 @@ public class EliminarProfesorServlet extends HttpServlet {
 
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuario");
         int idUsuarioLogueado = usuarioLogueado.getId();
-        String rolUsuario = usuarioLogueado.getRol(); // Obtenemos el rol (ej: "Administrador", "Admin", etc.)
+        String rolUsuario = usuarioLogueado.getRol(); 
 
-        // 2. RECUPERAR EL ID DEL PROFESOR A ELIMINAR
+        
         String idProfesorStr = request.getParameter("idProfesor");
         if (idProfesorStr == null || idProfesorStr.trim().isEmpty()) {
             String msg = "ID de profesor inválido o ausente.";
@@ -56,20 +56,15 @@ public class EliminarProfesorServlet extends HttpServlet {
 
             
             if (rolUsuario != null && (rolUsuario.equalsIgnoreCase("Administrador") || rolUsuario.equalsIgnoreCase("admin") || rolUsuario.equals("1"))) {
-                // El administrador tiene súper poderes: pasamos un valor comodín o usamos una sobrecarga en tu DAO si existiera.
-                // Si tu DAO actual requiere estrictamente el ID del creador en el SQL, lo ideal es crear un método en tu CatalogoDao 
-                // llamado 'eliminarProfesorPorAdmin(idProfesor)' que ejecute un simple 'DELETE FROM profesores WHERE id_profesor = ?'
+                
                 
                 try {
-                    // Intentamos usar un método directo para admins si lo agregas a tu DAO, 
-                    // de lo contrario usamos el normal por si el admin mismo lo creó.
                     exito = catalogoDao.eliminarProfesorPorAdmin(idProfesor);
                 } catch (NoSuchMethodError | Exception e) {
-                    // Si no has creado el método en el DAO, ejecutará el estándar temporalmente
                     exito = catalogoDao.eliminarProfesor(idProfesor, idUsuarioLogueado); 
                 }
             } else {
-                // Si es un usuario común, aplica la regla estricta: sólo su propio creador
+                
                 exito = catalogoDao.eliminarProfesor(idProfesor, idUsuarioLogueado); 
             }
 

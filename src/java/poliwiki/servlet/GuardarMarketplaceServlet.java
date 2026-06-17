@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,6 @@ import poliwiki.dao.InformacionDao;
 import poliwiki.dao.MarketplaceDao;
 import poliwiki.model.Usuario;
 
-// 1. Cambiamos la ruta de acceso exclusiva para el Marketplace
 @WebServlet("/GuardarMarketplaceServlet")
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
@@ -35,22 +35,21 @@ public class GuardarMarketplaceServlet extends HttpServlet {
         
         request.setCharacterEncoding("UTF-8");
         
-        // ==================== CONTROL DE SESIÓN ESTRICTO ====================
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("iniciarSesion.jsp"); // <--- Tu archivo real de login
+            response.sendRedirect("iniciarSesion.jsp");
             return;
         }
         
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuario");
         int idUsuario = usuarioLogueado.getId();
 
-        // 1. Obtener parámetros desde el formulario del Modal
+        String idProductoStr = request.getParameter("idProducto");
         String titulo = request.getParameter("titulo");
         String precioStr = request.getParameter("precio");
         String tema = request.getParameter("tema"); 
         String escuelaSeleccionada = request.getParameter("escuela");
-        String contenidoGeneral = request.getParameter("descripcion"); // El textarea del modal
+        String contenidoGeneral = request.getParameter("descripcion"); 
         
         if (escuelaSeleccionada == null || escuelaSeleccionada.isEmpty()) {
             escuelaSeleccionada = "General";
@@ -58,7 +57,6 @@ public class GuardarMarketplaceServlet extends HttpServlet {
         
         double precio = (precioStr != null && !precioStr.isEmpty()) ? Double.parseDouble(precioStr) : 0.0;
 
-        // Directorio de subida absoluto para la imagen
         String applicationPath = request.getServletContext().getRealPath("");
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
         File uploadFolder = new File(uploadFilePath);
@@ -71,15 +69,15 @@ public class GuardarMarketplaceServlet extends HttpServlet {
         MarketplaceDao marketDao = new MarketplaceDao();
 
         try {
-            // Procesar la imagen del producto
+            boolean esEdicion = (idProductoStr != null && !idProductoStr.trim().isEmpty());
+            
             Part partFoto = request.getPart("foto");
             if (partFoto != null && partFoto.getSize() > 0) {
                 String originalName = obtenerNombreArchivo(partFoto);
                 String extension = obtenerExtension(originalName);
                 
-                // Validar extensión de imagen
                 if (!EXTENSIONES_IMAGENES.contains(extension.toLowerCase())) {
-                    response.getWriter().println("Error: Tipo de archivo no permitido para imagenes.");
+                    response.getWriter().println("Error: Tipo de archivo no permitido para imágenes.");
                     return;
                 }
                 
@@ -88,18 +86,36 @@ public class GuardarMarketplaceServlet extends HttpServlet {
                 archivoUrl = UPLOAD_DIR + "/" + fileName;
             }
             
-            String fotoFinal = (archivoUrl != null) ? archivoUrl : "IMG/default-item.png";
             String descripcionConTema = "[" + tema + "] " + contenidoGeneral;
-            
-            // 1. Guardar en la tabla de Marketplace
-            marketDao.crearItem(idUsuario, titulo, descripcionConTema, precio, fotoFinal, escuelaSeleccionada);
-            
-            // 2. Registrar el testigo en el muro general de informacion.jsp (id_categoria 1 por defecto)
             String textoConPrecio = "[Precio: $" + precio + "] " + descripcionConTema;
-            infoDao.insertarPublicacion(1, idUsuario, titulo, textoConPrecio, "Marketplace", archivoUrl, tema);
             
-            // Redireccionar al marketplace con éxito
-            response.sendRedirect("marketplace.jsp?mensaje=Publicacion+creada+con+exito");
+            if (esEdicion) {
+                int idProducto = Integer.parseInt(idProductoStr);
+                
+                String fotoFinal = archivoUrl;
+                if (fotoFinal == null) {
+                    Map<String, Object> itemExistente = marketDao.obtenerItemPorId(idProducto); // Asegúrate de tener este método en tu DAO
+                    if (itemExistente != null && itemExistente.get("foto_url") != null) {
+                        fotoFinal = itemExistente.get("foto_url").toString();
+                    } else {
+                        fotoFinal = "IMG/default-item.png";
+                    }
+                }
+                
+                
+                marketDao.actualizarItem(idProducto, titulo, descripcionConTema, precio, fotoFinal, escuelaSeleccionada);
+                
+                response.sendRedirect("marketplace.jsp?mensaje=Publicacion+actualizada+con+exito");
+                
+            } else {
+                String fotoFinal = (archivoUrl != null) ? archivoUrl : "IMG/default-item.png";
+                
+                marketDao.crearItem(idUsuario, titulo, descripcionConTema, precio, fotoFinal, escuelaSeleccionada);
+                
+                infoDao.insertarPublicacion(1, idUsuario, titulo, textoConPrecio, "Marketplace", archivoUrl, tema);
+                
+                response.sendRedirect("marketplace.jsp?mensaje=Publicacion+creada+con+exito");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

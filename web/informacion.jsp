@@ -75,7 +75,6 @@
                                 
                                 <div class="card-tags">
                                     <%
-                                        // 1. Recuperamos el tipo de publicación
                                         if (tipoPub != null && !tipoPub.trim().isEmpty()) {
                                     %>
                                             <span class="tag-item" style="background-color: #f0f0f0; font-weight: bold;"><%= tipoPub %></span>
@@ -84,7 +83,6 @@
                                     %>
 
                                     <%
-                                        // 2. Recuperamos la cadena de temas
                                         String temasString = (String) publicacion.get("temas");
                                         
                                         if (temasString != null && !temasString.trim().isEmpty()) {
@@ -243,7 +241,6 @@
             document.addEventListener("DOMContentLoaded", function() {
                 console.log("Controlador del modal listo.");
 
-                // Evaluamos dinámicamente el estado de la sesión
                 <% 
                     HttpSession s = request.getSession(false);
                     boolean isLogged = (s != null && s.getAttribute("usuario") != null);
@@ -257,7 +254,6 @@
                 const btnCerrar = document.getElementById('btnCerrarModal');
                 const btnCerrarWarning = document.getElementById('btnCerrarWarning');
 
-                // 1. Manejo de apertura condicionada por la sesión
                 if (btnAbrir) {
                     btnAbrir.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -282,13 +278,11 @@
                     });
                 }
 
-                // Window click para cerrar modales externamente si es necesario
                 window.addEventListener('click', (e) => {
                     if (e.target === modalPub) modalPub.style.display = 'none';
                     if (e.target === modalWarn) modalWarn.style.display = 'none';
                 });
 
-                // 2. Control de Pestañas Interactivas
                 const pestanas = document.querySelectorAll('.tab-btn');
                 const inputTipo = document.getElementById('tipoPublicacionInput');
                 
@@ -326,7 +320,6 @@
                     });
                 });
 
-                // 3. Disparadores de clicks para las Zonas Drag & Drop
                 const zonaDropGeneral = document.getElementById('zonaDrop');
                 const fileInputGeneral = document.getElementById('fileInput');
                 if (zonaDropGeneral && fileInputGeneral) {

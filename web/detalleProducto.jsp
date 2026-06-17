@@ -3,7 +3,6 @@
 <%@page import="java.util.List"%>
 <%@page import="poliwiki.dao.MarketplaceDao"%>
 <%
-    // Obtener el ID del producto enviado por la URL
     String idParam = request.getParameter("id");
     Map<String, Object> producto = null;
     List<Map<String, Object>> listaPreguntas = null;
@@ -18,7 +17,6 @@
             if (producto == null) {
                 errorProducto = "El producto solicitado no existe o fue eliminado.";
             } else {
-                // Recuperamos dinámicamente las preguntas guardadas para este producto
                 listaPreguntas = marketplaceDao.obtenerPreguntasPorItem(idItem);
             }
         } catch (NumberFormatException e) {
@@ -30,8 +28,6 @@
         errorProducto = "No se especificó ningún producto para visualizar.";
     }
 
-    // VALIDACIÓN DE SESIÓN: Revisa si existe el usuario logueado.
-    // NOTA: Si el atributo de tu sesión se llama diferente (ej. "sessionUsuario"), cámbialo aquí.
     boolean estaLogueado = (session.getAttribute("usuario") != null);
 %>
 
@@ -44,7 +40,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
         
         <style>
-            /* Estilos básicos para asegurar que el modal luzca como una superposición limpia */
             .modal-overlay {
                 position: fixed;
                 top: 0; left: 0; width: 100%; height: 100%;
@@ -72,7 +67,6 @@
                     <a href="marketplace.jsp" class="btn-crear" style="background-color: #6c757d;"><i class="fas fa-arrow-left"></i> Volver al Marketplace</a>
                 </div>
             <% } else { 
-                // Procesar precio seguro
                 double precioVar = 0.0;
                 if (producto.get("precio") != null) {
                     if (producto.get("precio") instanceof Number) {
@@ -134,17 +128,52 @@
                             Aún no hay preguntas. ¡Sé el primero en contactar al vendedor!
                         </div>
                     <% } else { %>
-                        <div class="lista-comentarios" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
-                            <% for (Map<String, Object> pregunta : listaPreguntas) { %>
-                                <div class="comentario-item" style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                        <span style="font-weight: bold; color: #722f37;"><i class="fas fa-user-circle"></i> <%= pregunta.get("vendedor_pregunta") %></span>
-                                        <span style="font-size: 0.85rem; color: #999;"><%= pregunta.get("creado_en") %></span>
-                                    </div>
-                                    <p style="margin: 0; color: #444; font-size: 0.95rem; line-height: 1.4;"><%= pregunta.get("comentario") %></p>
-                                </div>
-                            <% } %>
-                        </div>
+                        <div class="lista-comentarios" style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 25px;">
+    <% for (Map<String, Object> pregunta : listaPreguntas) { 
+        // Intentamos separar el nombre y la carrera si vienen juntos en el formato "Nombre (Carrera)"
+        String remitenteCompleto = (pregunta.get("vendedor_pregunta") != null) ? pregunta.get("vendedor_pregunta").toString() : "Alumno Anónimo";
+        String nombreMostrar = remitenteCompleto;
+        String carreraMostrar = ""; // Por si no tiene carrera guardada separada
+        
+        if (remitenteCompleto.contains("(") && remitenteCompleto.contains(")")) {
+            int inicioId = remitenteCompleto.indexOf("(");
+            int finId = remitenteCompleto.indexOf(")");
+            nombreMostrar = remitenteCompleto.substring(0, inicioId).trim();
+            carreraMostrar = remitenteCompleto.substring(inicioId + 1, finId).trim();
+        }
+    %>
+        <div class="comentario-card" style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-left: 5px solid #722f37; display: flex; flex-direction: column; gap: 8px;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span style="font-weight: 700; color: #333333; font-size: 1.1rem; letter-spacing: -0.3px;">
+                        <%= nombreMostrar %>
+                    </span>
+                    <% if (!carreraMostrar.isEmpty()) { %>
+                        <span style="font-size: 0.85rem; color: #777777; font-weight: 500;">
+                            <i class="fas fa-graduation-cap" style="font-size: 0.8rem; margin-right: 3px;"></i> <%= carreraMostrar %>
+                        </span>
+                    <% } else { %>
+                        <span style="font-size: 0.85rem; color: #999999; font-style: italic;">
+                            Estudiante
+                        </span>
+                    <% } %>
+                </div>
+                
+                <span style="font-size: 0.85rem; color: #aaaaaa; font-weight: 400;">
+                    <i class="far fa-clock" style="font-size: 0.8rem;"></i> <%= pregunta.get("creado_en") %>
+                </span>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid #f5f5f5; margin: 4px 0;">
+            
+            <div style="color: #444444; font-size: 1rem; line-height: 1.5; padding-top: 4px; word-break: break-word;">
+                <%= pregunta.get("comentario") %>
+            </div>
+            
+        </div>
+    <% } %>
+</div>
                     <% } %>
 
                     <form id="formComentario" action="GuardarPreguntaMarketplaceServlet" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
@@ -179,24 +208,19 @@
 
         <script>
             document.getElementById('formComentario').addEventListener('submit', function(event) {
-                // Evaluamos la variable booleana inyectada desde JSP
                 var registrado = <%= estaLogueado %>;
                 
                 if (!registrado) {
-                    // Detiene por completo el envío del formulario al Servlet
                     event.preventDefault();
                     
-                    // Muestra el modal de advertencia cambiando el display de flex a none
                     document.getElementById('modalLoginWarning').style.display = 'flex';
                 }
             });
 
-            // Función para cerrar el modal al hacer clic en la "X"
             document.getElementById('btnCerrarWarning').addEventListener('click', function() {
                 document.getElementById('modalLoginWarning').style.display = 'none';
             });
 
-            // Cerrar el modal de manera externa si se hace clic fuera del recuadro blanco
             window.addEventListener('click', function(event) {
                 var modal = document.getElementById('modalLoginWarning');
                 if (event.target === modal) {

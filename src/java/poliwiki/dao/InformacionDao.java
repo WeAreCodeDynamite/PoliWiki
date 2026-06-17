@@ -24,7 +24,6 @@ public class InformacionDao {
     public List<Map<String, Object>> listarPublicaciones() throws Exception {
         List<Map<String, Object>> lista = new ArrayList<>();
         
-        // CORREGIDO: Consulta limpia, estructurada y sin llamadas erróneas a id_publicacion en marketplace
         String sql = "SELECT " +
                      "  p.id_publicacion, " +
                      "  p.titulo, " +
@@ -83,7 +82,6 @@ public class InformacionDao {
             
             ps.setInt(1, idCategoria);
             
-            // CORREGIDO: Validación segura de valores nulos para la clave foránea del usuario
             if (idUsuario != null) {
                 ps.setInt(2, idUsuario);
             } else {
@@ -104,4 +102,22 @@ public class InformacionDao {
             throw new Exception("Error al insertar la publicación en MySQL: " + e.getMessage());
         }
     }
+    public boolean eliminarPublicacionDuplicada(String titulo, int idUsuario, String tipoPublicacion) throws Exception {
+    String sql = "DELETE FROM publicaciones_foro WHERE titulo = ? AND id_usuario = ? AND tipo_publicacion = ?";
+    
+    try (Connection con = obtenerConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        ps.setString(1, titulo);
+        ps.setInt(2, idUsuario);
+        ps.setString(3, tipoPublicacion);
+        
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new Exception("Error al eliminar la publicación duplicada en el foro: " + e.getMessage());
+    }
+}
 }

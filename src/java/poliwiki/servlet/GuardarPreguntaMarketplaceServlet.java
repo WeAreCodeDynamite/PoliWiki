@@ -1,4 +1,4 @@
-package poliwiki.servlet; // Asegúrate de que coincida con tu paquete de servlets
+package poliwiki.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import poliwiki.dao.MarketplaceDao;
+import poliwiki.model.Usuario; // IMPORTANTE: Importa tu modelo de Usuario
 
 @WebServlet(name = "GuardarPreguntaMarketplaceServlet", urlPatterns = {"/GuardarPreguntaMarketplaceServlet"})
 public class GuardarPreguntaMarketplaceServlet extends HttpServlet {
@@ -15,15 +16,28 @@ public class GuardarPreguntaMarketplaceServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // Ajustamos la codificación de caracteres para aceptar acentos y la Ñ
         request.setCharacterEncoding("UTF-8");
         
-        // Obtenemos la sesión para rescatar el nombre del alumno logueado
         HttpSession session = request.getSession();
-        String usuarioLogueado = (String) session.getAttribute("nombreUsuario"); 
         
-        // Si no encuentras 'nombreUsuario', intenta con el atributo exacto que uses en tu Login (ej. "usuario", "nombre", etc.)
-        if (usuarioLogueado == null) {
+        // 1. Recuperamos el objeto Usuario usando la clave exacta de la sesión
+        Usuario userObj = (Usuario) session.getAttribute("usuario"); 
+        
+        String usuarioLogueado;
+        
+        // 2. Si el usuario existe en la sesión, armamos la cadena con Nombre y Carrera
+        if (userObj != null) {
+            String nombre = userObj.getNombreCompleto();
+            String carrera = userObj.getCarrera();
+            
+            // Si tiene carrera asignada, la mostramos; si no, solo el nombre
+            if (carrera != null && !carrera.trim().isEmpty()) {
+                usuarioLogueado = nombre + " (" + carrera + ")";
+            } else {
+                usuarioLogueado = nombre;
+            }
+        } else {
+            // Respaldo en caso de que la sesión haya expirado o no esté logueado
             usuarioLogueado = "Alumno Anónimo";
         }
         
@@ -35,10 +49,10 @@ public class GuardarPreguntaMarketplaceServlet extends HttpServlet {
                 int idItem = Integer.parseInt(idItemParam);
                 
                 MarketplaceDao dao = new MarketplaceDao();
+                // 3. Se envía el String formateado a tu DAO para que se guarde en la BD
                 boolean guardado = dao.guardarPregunta(idItem, usuarioLogueado, comentario);
                 
                 if (guardado) {
-                    // Redirige de vuelta al detalle del producto con un mensaje de éxito
                     response.sendRedirect("detalleProducto.jsp?id=" + idItem + "&mensaje=Pregunta enviada correctamente");
                 } else {
                     response.sendRedirect("detalleProducto.jsp?id=" + idItem + "&error=No se pudo guardar el comentario en la base de datos");
