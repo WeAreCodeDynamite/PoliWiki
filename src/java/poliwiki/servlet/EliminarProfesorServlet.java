@@ -1,4 +1,4 @@
-package poliwiki.servlets; 
+package poliwiki.servlet; 
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

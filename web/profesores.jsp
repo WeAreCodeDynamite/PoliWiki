@@ -256,23 +256,45 @@
             <div class="modal-alert-icon-container">
                 <div class="modal-alert-icon-blue">i</div>
             </div>
-            <h2 class="modal-alert-title">¡Hubo un problema!</h2>
+            <h2 class="modal-alert-title">¡Hubo un problemón!</h2>
             <p id="modalErrorTexto" class="modal-alert-text">Mensaje de error.</p>
             <div class="modal-alert-actions">
                 <button class="modal-alert-btn-primary" onclick="cerrarModalError()">Entendido</button>
             </div>
         </div>
     </div>
-                <div id="modalExitoProfesor" class="modal-alert-overlay" style="display: none;">
-        <div class="modal-alert-content" style="border-top: 5px solid #2e7d32;">
+
+    <div id="modalExitoProfesor" class="modal-alert-overlay" style="display: none;">
+        <div class="modal-alert-content" style="border-top: 5px solid #800020;">
             <span class="modal-alert-close" onclick="cerrarModalExito()">&times;</span>
             <div class="modal-alert-icon-container">
                 <span class="material-icons-outlined" style="font-size: 4rem; color: #2e7d32;">check_circle</span>
             </div>
-            <h2 class="modal-alert-title" style="color: #2e7d32; margin-top: 10px;">¡Excelente!</h2>
+            <h2 class="modal-alert-title" style="color: #800020; margin-top: 10px;">¡Excelente!</h2>
             <p id="modalExitoTexto" class="modal-alert-text">¡Publicación creada con éxito!</p>
             <div class="modal-alert-actions">
-                <button class="modal-alert-btn-primary" style="background-color: #2e7d32;" onclick="cerrarModalExito()">Entendido</button>
+                <button class="modal-alert-btn-primary" style="background-color: #800020; color: white;" onclick="cerrarModalExito()">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalConfirmarEliminar" class="modal-alert-overlay" style="display: none;">
+        <div class="modal-alert-content" style="border-top: 5px solid #d32f2f; max-width: 450px;">
+            <span class="modal-alert-close" onclick="cerrarModalConfirmar()">&times;</span>
+            <div class="modal-alert-icon-container" style="margin-top: 15px;">
+                <span class="material-icons-outlined" style="font-size: 4rem; color: #d32f2f;">delete_forever</span>
+            </div>
+            <h2 class="modal-alert-title" style="color: #333; margin-top: 10px; font-size: 1.5rem;">¿Estás completamente seguro?</h2>
+            <p id="modalConfirmarTexto" class="modal-alert-text" style="color: #555; padding: 0 10px;">
+                ¿Estás seguro de eliminar al profesor/a: <strong id="nombreProfesorEliminar"></strong>?<br>Esta acción no se puede deshacer.
+            </p>
+            <div class="modal-alert-actions" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button class="modal-alert-btn-primary" style="background-color: #666; color: white; border-radius: 20px; padding: 10px 20px;" onclick="cerrarModalConfirmar()">
+                    Cancelar
+                </button>
+                <button id="btnAceptarEliminar" class="modal-alert-btn-primary" style="background-color: #d32f2f; color: white; border-radius: 20px; padding: 10px 20px;">
+                    Aceptar
+                </button>
             </div>
         </div>
     </div>
@@ -360,7 +382,7 @@
                 inputNombre.style.cursor = "not-allowed";
 
                 document.getElementById('profesorId').value = id;
-                inputNombre.value = nombre;
+                inputNombre.value = nombre; // Corregido 'name' por 'nombre'
                 document.getElementById('materia').value = ""; 
                 document.getElementById('materiaEscrita').value = materias;
                 document.getElementById('correo').value = correo;
@@ -375,13 +397,27 @@
             }
         }
 
-        // === CÓDIGO AÑADIDO: Lógica JavaScript para Borrar ===
+        var idProfesorAEliminar = null;
+
         function confirmarEliminar(id, nombre) {
-            var respuesta = confirm("¿Estás completamente seguro de eliminar al profesor/a: " + nombre + "? Esta acción no se puede deshacer.");
-            if (respuesta) {
-                // Redirige al Servlet encargado de procesar la eliminación enviando el parámetro por GET
-                window.location.href = contextPath + "/EliminarProfesorServlet?idProfesor=" + id;
+            idProfesorAEliminar = id;
+            document.getElementById('nombreProfesorEliminar').innerText = nombre;
+            document.getElementById('modalConfirmarEliminar').style.display = 'flex';
+            
+            document.getElementById('btnAceptarEliminar').onclick = function() {
+                ejecutarEliminacion();
+            };
+        }
+
+        function ejecutarEliminacion() {
+            if (idProfesorAEliminar) {
+                window.location.href = contextPath + "/EliminarProfesorServlet?idProfesor=" + idProfesorAEliminar;
             }
+        }
+
+        function cerrarModalConfirmar() {
+            document.getElementById('modalConfirmarEliminar').style.display = 'none';
+            idProfesorAEliminar = null;
         }
 
         function cerrarModal() {
@@ -401,38 +437,20 @@
             window.history.replaceState({}, document.title, url);
         }
 
-        window.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const mensajeError = urlParams.get('error');
-
-            if (mensajeError) {
-                const modalError = document.getElementById('modalErrorProfesor');
-                const modalTexto = document.getElementById('modalErrorTexto');
-
-                if (modalError && modalTexto) {
-                    modalTexto.textContent = mensajeError;
-                    modalError.style.display = 'flex';
-                }
-            }
-        });
-        // === NUEVA LÓGICA PARA MODAL DE ÉXITO ===
         function cerrarModalExito() {
             document.getElementById('modalExitoProfesor').style.display = 'none';
-            // Limpia los parámetros de la URL para que no se vuelva a abrir al recargar
             const url = new URL(window.location);
             url.searchParams.delete('exito');
             url.searchParams.delete('msg');
             window.history.replaceState({}, document.title, url);
         }
 
-        // Modificamos el evento DOMContentLoaded existente para que escuche tanto errores como éxitos
         window.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const mensajeError = urlParams.get('error');
             const exitoParam = urlParams.get('exito');
-            const mensajeExito = urlParams.get('msg'); // Opcional por si deseas personalizar el texto desde el Servlet
+            const mensajeExito = urlParams.get('msg');
 
-            // Lógica de Error (Ya existente)
             if (mensajeError) {
                 const modalError = document.getElementById('modalErrorProfesor');
                 const modalTexto = document.getElementById('modalErrorTexto');
@@ -442,7 +460,6 @@
                 }
             }
 
-            // Lógica de Éxito (Nueva)
             if (exitoParam === 'true') {
                 const modalExito = document.getElementById('modalExitoProfesor');
                 const modalTexto = document.getElementById('modalExitoTexto');

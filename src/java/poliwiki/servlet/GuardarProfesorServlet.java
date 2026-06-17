@@ -133,8 +133,9 @@ public class GuardarProfesorServlet extends HttpServlet {
             boolean exito = catalogoDao.guardarProfesor(nombres, apellidoPaterno, apellidoMaterno, correo, idEscuela, materiaFinal, nombreArchivo, areaAcademica, idUsuarioCreador);
             
             if (exito) {
-                String mensajeExito = "Profesor guardado con éxito.";
-                response.sendRedirect("profesores.jsp?mensaje=" + java.net.URLEncoder.encode(mensajeExito, StandardCharsets.UTF_8.toString()));
+                // === AQUÍ SE COLOCA LA REDIRECCIÓN DE ÉXITO CORREGIDA ===
+                String mensajeExito = "Publicacion creada con exito";
+                response.sendRedirect("profesores.jsp?exito=true&msg=" + java.net.URLEncoder.encode(mensajeExito, StandardCharsets.UTF_8.toString()));
             } else {
                 String mensajeFallo = "No se pudo guardar el profesor en el catálogo.";
                 response.sendRedirect("profesores.jsp?error=" + java.net.URLEncoder.encode(mensajeFallo, StandardCharsets.UTF_8.toString()));
