@@ -26,9 +26,7 @@ public class MaterialDao {
         }
     }
 
-    // =========================================================================
-    // LISTAR PUBLICACIONES EXCLUSIVAMENTE DE TIPO 'Material' (Público)
-    // =========================================================================
+   
     public List<Map<String, Object>> listarPublicacionesMaterial() throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
         
@@ -60,5 +58,24 @@ public class MaterialDao {
         }
         
         return lista;
+    }
+
+    /**
+     * Elimina una publicación de material por su ID.
+     * * @param idPublicacion El identificador único del recurso a remover.
+     * @return true si la publicación fue eliminada con éxito, false en caso contrario.
+     * @throws SQLException Si ocurre algún error en la base de datos.
+     */
+    public boolean eliminarPublicacion(int idPublicacion) throws SQLException {
+        String sql = "DELETE FROM publicaciones_foro WHERE id_publicacion = ?";
+        
+        try (Connection cn = Database.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            
+            ps.setInt(1, idPublicacion);
+            int filasAfectadas = ps.executeUpdate();
+            
+            return filasAfectadas > 0;
+        }
     }
 }

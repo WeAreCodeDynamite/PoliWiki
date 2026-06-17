@@ -1,21 +1,29 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
+<%@page import="poliwiki.model.Usuario"%>
 <%@page import="poliwiki.dao.ForoDao"%>
 <%@page import="poliwiki.dao.MarketplaceDao"%>
 <%@page import="poliwiki.dao.ApuntesDao"%>
 <%@page import="poliwiki.dao.MaterialDao"%>
 <%
+    // 1. Inicialización de DAOs y Variables de datos
     ForoDao foroDao = new ForoDao();
     List<Map<String, Object>> categories = null;
     List<Map<String, Object>> publicaciones = null;
     String errorCarga = null;
+    
     try {
         categories = foroDao.listarCategorias();
         publicaciones = foroDao.listarPublicaciones();
     } catch (Exception ex) {
         errorCarga = "No se pudieron cargar los foros. Revisa la conexión a MySQL.";
     }
+
+    // 2. Control de Sesión Global (CORRECCIÓN DEL ERROR)
+    HttpSession s = request.getSession(false);
+    boolean isLogged = (s != null && s.getAttribute("usuario") != null);
+    Usuario userLog = isLogged ? (Usuario) s.getAttribute("usuario") : null;
 %>
 <!DOCTYPE html>
 <html>
@@ -125,9 +133,30 @@
                                     💬 <%= publicacion.get("respuestas") != null ? publicacion.get("respuestas") : 0 %> Comentarios
                                 </a>
                             </div>
-                            <div class="footer-der">
-                                <span class="icon-guardar">🔖</span>
-                            </div>
+                            
+                            <div class="footer-der" style="display: inline-flex; align-items: center; gap: 12px;">
+    <% 
+        if (isLogged && userLog != null) {
+            // CAMBIA "id_usuario" por el nombre correcto que descubras en el Paso 1 si es necesario
+            Object idAutorObj = publicacion.get("id_usuario"); 
+            
+            if (idAutorObj != null) {
+                // Convertimos de forma segura ambos valores a strings recortados para compararlos sin importar el tipo numérico exacto
+                String idAutorStr = idAutorObj.toString().trim();
+                String idSessionStr = String.valueOf(userLog.getId()).trim();
+                
+                if (idAutorStr.equals(idSessionStr)) {
+    %>
+                    <a href="editarPublicacion.jsp?id=<%= publicacion.get("id_publicacion") %>" title="Editar" style="text-decoration: none; color: inherit;">📝</a>
+                    
+                    <a href="EliminarPublicacionServlet?id=<%= publicacion.get("id_publicacion") %>" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar esta publicación?');" style="text-decoration: none; color: inherit;">🗑️</a>
+    <% 
+                }
+            }
+        }
+    %>
+    <span class="icon-guardar">🔖</span>
+</div>
                         </div>
                     </article>
                     <%   }
@@ -195,9 +224,9 @@
                     <div id="seccion-academica">
                         <label for="materiaSelect">Categoría del Foro</label>
                         <select id="materiaSelect" name="id_materia">
-                        <option value="">Buscar o seleccionar materia</option>
-                        <option value="2">Matemáticas</option>
-                        <option value="1">Estructuras de Datos</option>
+                            <option value="">Buscar o seleccionar materia</option>
+                            <option value="2">Matemáticas</option>
+                            <option value="1">Estructuras de Datos</option>
                         </select>
 
                         <label for="temasInput">Temas</label>
@@ -241,10 +270,7 @@
             document.addEventListener("DOMContentLoaded", function() {
                 console.log("Controlador del modal listo.");
 
-                <% 
-                    HttpSession s = request.getSession(false);
-                    boolean isLogged = (s != null && s.getAttribute("usuario") != null);
-                %>
+                // Asignamos la variable controlada al inicio a JavaScript de forma segura
                 const usuarioLogueado = <%= isLogged %>;
 
                 const modalPub = document.getElementById('modalPublicacion');

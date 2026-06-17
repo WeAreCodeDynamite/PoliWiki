@@ -33,7 +33,7 @@ public class InformacionDao {
                      "  p.temas, " + 
                      "  DATE_FORMAT(p.creado_en, '%d/%m/%Y %H:%i') AS creado_en, " +
                      "  COALESCE(CONCAT(u.nombres, ' ', u.apellido_paterno), 'Invitado') AS autor, " +
-                     "  COALESCE(c.nombre, 'Estudiante') AS carrera, " + // Si el usuario no tiene carrera, evita el null y pone Estudiante
+                     "  COALESCE(c.nombre, 'Estudiante') AS carrera, " + 
                      "  cat.nombre AS categoria, " + 
                      "  (SELECT COUNT(*) FROM respuestas_foro r WHERE r.id_publicacion = p.id_publicacion) AS respuestas " +
                      "FROM publicaciones_foro p " +
@@ -57,10 +57,10 @@ public class InformacionDao {
                 registro.put("temas", rs.getString("temas")); 
                 registro.put("creado_en", rs.getString("creado_en"));
                 registro.put("autor", rs.getString("autor"));
-                registro.put("carrera", rs.getString("carrera")); // Mapeo seguro directo de la tabla carreras
+                registro.put("carrera", rs.getString("carrera")); 
                 registro.put("categoria", rs.getString("categoria"));
                 registro.put("respuestas", rs.getInt("respuestas"));
-                registro.put("precio", 0.0); // Evita errores de compilación si tu vista busca la propiedad "precio"
+                registro.put("precio", 0.0); 
                 
                 lista.add(registro);
             }
@@ -102,22 +102,59 @@ public class InformacionDao {
             throw new Exception("Error al insertar la publicación en MySQL: " + e.getMessage());
         }
     }
+
     public boolean eliminarPublicacionDuplicada(String titulo, int idUsuario, String tipoPublicacion) throws Exception {
-    String sql = "DELETE FROM publicaciones_foro WHERE titulo = ? AND id_usuario = ? AND tipo_publicacion = ?";
-    
-    try (Connection con = obtenerConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "DELETE FROM publicaciones_foro WHERE titulo = ? AND id_usuario = ? AND tipo_publicacion = ?";
         
-        ps.setString(1, titulo);
-        ps.setInt(2, idUsuario);
-        ps.setString(3, tipoPublicacion);
-        
-        int filasAfectadas = ps.executeUpdate();
-        return filasAfectadas > 0;
-        
-    } catch (Exception e) {
-        e.printStackTrace();
-        throw new Exception("Error al eliminar la publicación duplicada en el foro: " + e.getMessage());
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, titulo);
+            ps.setInt(2, idUsuario);
+            ps.setString(3, tipoPublicacion);
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error al eliminar la publicación duplicada en el foro: " + e.getMessage());
+        }
     }
-}
+
+    /**
+     * Actualiza una publicación existente en el foro (Material, Apuntes, Preguntas).
+     */
+    public boolean actualizarPublicacion(int idPublicacion, int idCategoria, String titulo, String contenido, String archivoUrl, String temas) throws Exception {
+        // SQL dinámico: si archivoUrl es nulo, no se actualiza ese campo para no borrar el archivo previo en BD
+        String sql;
+        if (archivoUrl != null) {
+            sql = "UPDATE publicaciones_foro SET id_categoria = ?, titulo = ?, contenido = ?, archivo_url = ?, temas = ? WHERE id_publicacion = ?";
+        } else {
+            sql = "UPDATE publicaciones_foro SET id_categoria = ?, titulo = ?, contenido = ?, temas = ? WHERE id_publicacion = ?";
+        }
+        
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, idCategoria);
+            ps.setString(2, titulo);
+            ps.setString(3, contenido);
+            
+            if (archivoUrl != null) {
+                ps.setString(4, archivoUrl);
+                ps.setString(5, temas);
+                ps.setInt(6, idPublicacion);
+            } else {
+                ps.setString(4, temas);
+                ps.setInt(5, idPublicacion);
+            }
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error al actualizar la publicación en MySQL: " + e.getMessage());
+        }
+    }
 }

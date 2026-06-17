@@ -2,6 +2,7 @@ package poliwiki.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -27,7 +28,6 @@ public class GuardarPublicacionServlet extends HttpServlet {
 
     private static final String UPLOAD_DIR = "Archivos";
     
-    // Listas blancas de extensiones permitidas por seguridad
     private static final List<String> EXTENSIONES_DOCUMENTOS = Arrays.asList("pdf", "docx", "doc", "txt");
     private static final List<String> EXTENSIONES_IMAGENES = Arrays.asList("png", "jpg", "jpeg");
 
@@ -37,7 +37,6 @@ public class GuardarPublicacionServlet extends HttpServlet {
         
         request.setCharacterEncoding("UTF-8");
         
-        // ==================== CONTROL DE SESIÓN ESTRICTO ====================
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("usuario") == null) {
             response.sendRedirect("login.jsp");
@@ -47,19 +46,17 @@ public class GuardarPublicacionServlet extends HttpServlet {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuario");
         int idUsuario = usuarioLogueado.getId();
 
-        // 1. Obtener parámetros comunes del formulario
+        String idPublicacionStr = request.getParameter("id_publicacion"); // Captura el ID dinámico enviado por JS
         String tipoPublicacion = request.getParameter("tipo_publicacion"); 
         String titulo = request.getParameter("titulo");
         String idCategoriaStr = request.getParameter("id_categoria"); 
         String temas = request.getParameter("temas"); 
         String contenidoGeneral = request.getParameter("contenido_general");
         
-        // Detectar si el formulario envió una URL de redirección personalizada
         String redirectToParam = request.getParameter("redirect_to");
         
         int idCategoria = (idCategoriaStr != null && !idCategoriaStr.isEmpty()) ? Integer.parseInt(idCategoriaStr) : 1;
 
-        // Directorio de subida absoluto
         String applicationPath = request.getServletContext().getRealPath("");
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
         File uploadFolder = new File(uploadFilePath);
@@ -71,13 +68,17 @@ public class GuardarPublicacionServlet extends HttpServlet {
         InformacionDao infoDao = new InformacionDao();
         MarketplaceDao marketDao = new MarketplaceDao();
 
-        // Variable dinámica para definir el destino específico de cada flujo
-        String redireccionUrl = "informacion.jsp";
+        String redireccionBase = "informacion.jsp";
+        String mensajeStatus = "Publicacion realizada con exito";
 
         try {
-            // =========================================================================
-            // 1. FLUJO EXCLUSIVO PARA MATERIAL
-            // =========================================================================
+            boolean esEdicion = (idPublicacionStr != null && !idPublicacionStr.trim().isEmpty());
+            if (esEdicion) {
+                mensajeStatus = "Publicacion editada con exito";
+            } else {
+                mensajeStatus = "Publicacion creada con exito";
+            }
+
             if ("Material".equals(tipoPublicacion)) {
                 Part part = request.getPart("archivo_adjunto");
                 if (part != null && part.getSize() > 0) {
@@ -95,12 +96,14 @@ public class GuardarPublicacionServlet extends HttpServlet {
                     archivoUrl = UPLOAD_DIR + "/" + fileName;
                 }
                 
-                infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, contenidoGeneral, "Material", archivoUrl, temas);
-                redireccionUrl = "material.jsp"; // Redirecciona a la sección de Materiales
+                if (esEdicion) {
+                    int idPublicacion = Integer.parseInt(idPublicacionStr);
+                    infoDao.actualizarPublicacion(idPublicacion, idCategoria, titulo, contenidoGeneral, archivoUrl, temas);
+                } else {
+                    infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, contenidoGeneral, "Material", archivoUrl, temas);
+                }
+                redireccionBase = "material.jsp"; 
 
-            // =========================================================================
-            // 2. FLUJO EXCLUSIVO PARA APUNTES
-            // =========================================================================
             } else if ("Apuntes".equals(tipoPublicacion)) {
                 Part part = request.getPart("archivo_adjunto");
                 if (part != null && part.getSize() > 0) {
@@ -118,25 +121,28 @@ public class GuardarPublicacionServlet extends HttpServlet {
                     archivoUrl = UPLOAD_DIR + "/" + fileName;
                 }
                 
-                infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, contenidoGeneral, "Apuntes", archivoUrl, temas);
-                redireccionUrl = "apuntes.jsp"; 
+                if (esEdicion) {
+                    int idPublicacion = Integer.parseInt(idPublicacionStr);
+                    infoDao.actualizarPublicacion(idPublicacion, idCategoria, titulo, contenidoGeneral, archivoUrl, temas);
+                } else {
+                    infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, contenidoGeneral, "Apuntes", archivoUrl, temas);
+                }
+                redireccionBase = "apuntes.jsp"; 
 
-            // =========================================================================
-            // 3. FLUJO EXCLUSIVO PARA PREGUNTAS (MODIFICADO)
-            // =========================================================================
             } else if ("Pregunta".equals(tipoPublicacion)) {
                 String contenidoPregunta = request.getParameter("contenido_pregunta");
                 if (contenidoPregunta != null && !contenidoPregunta.isEmpty()) {
                     contenidoGeneral = contenidoPregunta;
                 }
                 
-                infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, contenidoGeneral, "Pregunta", null, temas);
-                // CORRECCIÓN: Ahora por defecto te mantendrá en la sección de foros/preguntas
-                redireccionUrl = "foritos.jsp";
+                if (esEdicion) {
+                    int idPublicacion = Integer.parseInt(idPublicacionStr);
+                    infoDao.actualizarPublicacion(idPublicacion, idCategoria, titulo, contenidoGeneral, null, temas);
+                } else {
+                    infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, contenidoGeneral, "Pregunta", null, temas);
+                }
+                redireccionBase = "foritos.jsp";
 
-            // =========================================================================
-            // 4. FLUJO EXCLUSIVO PARA MARKETPLACE
-            // =========================================================================
             } else if ("Marketplace".equals(tipoPublicacion)) {
                 String precioStr = request.getParameter("precio");
                 double precio = (precioStr != null && !precioStr.isEmpty()) ? Double.parseDouble(precioStr) : 0.0;
@@ -167,18 +173,19 @@ public class GuardarPublicacionServlet extends HttpServlet {
                 
                 marketDao.crearItem(idUsuario, titulo, contenidoGeneral, precio, fotoFinal, escuela);
                 
-                String textoConPrecio = "[Precio: $" + precio + "] " + contenidoGeneral;
-                infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, textoConPrecio, "Marketplace", archivoUrl, temas);
-                redireccionUrl = "informacion.jsp";
+                String textConPrecio = "[Precio: $" + precio + "] " + contenidoGeneral;
+                infoDao.insertarPublicacion(idCategoria, idUsuario, titulo, textConPrecio, "Marketplace", archivoUrl, temas);
+                redireccionBase = "informacion.jsp";
+                mensajeStatus = "Producto publicado con exito";
             }
 
-            // APLICACIÓN DEL REDIRECT DINÁMICO: Si el JSP especificó un destino, se usa este sobre los anteriores
             if (redirectToParam != null && !redirectToParam.trim().isEmpty()) {
-                redireccionUrl = redirectToParam;
+                redireccionBase = redirectToParam;
             }
 
-            // Redirección final
-            response.sendRedirect(redireccionUrl);
+            // Codificamos el mensaje correctamente en UTF-8 para evitar problemas de caracteres y espacios en la URL
+            String mensajeCodificado = URLEncoder.encode(mensajeStatus, "UTF-8");
+            response.sendRedirect(redireccionBase + "?exito=true&msg=" + mensajeCodificado);
 
         } catch (Exception e) {
             e.printStackTrace();

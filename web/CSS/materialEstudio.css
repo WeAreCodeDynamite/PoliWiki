@@ -456,3 +456,18 @@ body {
 .btn-enviar-form:hover {
     background-color: #5a1025;
 }
+.btn-accion-editar, .btn-accion-eliminar {
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 4px 8px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-accion-editar:hover {
+    background-color: #edf2f7;
+}
+
+.btn-accion-eliminar:hover {
+    background-color: #fff5f5;
+}
