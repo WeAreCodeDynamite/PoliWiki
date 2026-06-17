@@ -256,7 +256,7 @@
             <div class="modal-alert-icon-container">
                 <div class="modal-alert-icon-blue">i</div>
             </div>
-            <h2 class="modal-alert-title">¡Hubo un problemón!</h2>
+            <h2 class="modal-alert-title">¡Hubo un problema!</h2>
             <p id="modalErrorTexto" class="modal-alert-text">Mensaje de error.</p>
             <div class="modal-alert-actions">
                 <button class="modal-alert-btn-primary" onclick="cerrarModalError()">Entendido</button>
@@ -382,7 +382,7 @@
                 inputNombre.style.cursor = "not-allowed";
 
                 document.getElementById('profesorId').value = id;
-                inputNombre.value = nombre; // Corregido 'name' por 'nombre'
+                inputNombre.value = nombre; 
                 document.getElementById('materia').value = ""; 
                 document.getElementById('materiaEscrita').value = materias;
                 document.getElementById('correo').value = correo;

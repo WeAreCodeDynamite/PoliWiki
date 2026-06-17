@@ -1,13 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
-<%-- Importamos tu clase Usuario para que el JSP la reconozca --%>
 <%@page import="poliwiki.model.Usuario"%>
 <%
     Map<String, Object> tramite = (Map<String, Object>) request.getAttribute("tramite");
     List<Map<String, Object>> comentarios = (List<Map<String, Object>>) request.getAttribute("comentarios");
     
-    // Leemos el atributo directamente como el objeto Usuario de tu modelo
     Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuario") : null;
 %>
 <!DOCTYPE html>

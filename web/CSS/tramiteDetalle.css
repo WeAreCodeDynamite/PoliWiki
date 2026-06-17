@@ -150,6 +150,7 @@
     box-sizing: border-box;
     font-size: 13px;
     transition: border-color 0.2s;
+    font-family: inherit;
 }
 
 .form-comentario textarea:focus {

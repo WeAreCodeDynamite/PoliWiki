@@ -57,6 +57,18 @@ public class TramitesDao {
         ejecutar(sql, titulo, departamento, categoria, descripcion, urlOficial);
     }
 
+    // --- NUEVO MÉTODO: ELIMINAR TRÁMITE ---
+    public void eliminarTramite(int idTramite) throws SQLException {
+        String sql = "DELETE FROM tramites WHERE id_tramite = ?";
+        ejecutar(sql, idTramite);
+    }
+
+    // --- NUEVO MÉTODO: EDITAR / ACTUALIZAR TRÁMITE ---
+    public void editarTramite(int idTramite, String titulo, String departamento, String categoria, String descripcion, String urlOficial) throws SQLException {
+        String sql = "UPDATE tramites SET titulo = ?, departamento = ?, categoria = ?, descripcion = ?, url_oficial = ? WHERE id_tramite = ?";
+        ejecutar(sql, titulo, departamento, categoria, descripcion, urlOficial, idTramite);
+    }
+
     
 
     private List<Map<String, Object>> consultar(String sql, Object... params) throws SQLException {
