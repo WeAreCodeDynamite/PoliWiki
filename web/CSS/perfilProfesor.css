@@ -1,0 +1,365 @@
+/* ==========================================
+   Estilos específicos para la visualización de Tags acumulados 
+   ========================================== */
+.tag-resultado {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.88em;
+    font-weight: 500;
+    margin: 5px;
+}
+
+.tag-res-positivo { 
+    background: #eef9f1; 
+    color: #1e7e34; 
+    border: 1px solid #c3e6cb; 
+}
+
+.tag-res-mejorar { 
+    background: #fdf2f2; 
+    color: #bd2130; 
+    border: 1px solid #f5c6cb; 
+}
+
+.tag-contador { 
+    background: rgba(0,0,0,0.07); 
+    padding: 2px 6px; 
+    border-radius: 10px; 
+    font-size: 0.8em; 
+    margin-left: 6px; 
+    font-weight: bold; 
+}
+
+/* ==========================================
+   Estilos para el Modal interactivo de votación 
+   ========================================== */
+.modal-val { 
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.5); 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.modal-val-content { 
+    background-color: #fff; 
+    border-radius: 8px; 
+    width: 90%; 
+    max-width: 700px; 
+    max-height: 85vh; 
+    overflow-y: auto; 
+    padding: 25px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+    animation: fadeIn 0.3s ease; 
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(-10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* ==========================================
+   Estilos de los Checkboxes convertidos en botones Tag 
+   ========================================== */
+.grid-tags { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    margin-top: 5px; 
+    margin-bottom: 15px; 
+}
+
+.check-tag-pos, .check-tag-neg { 
+    display: inline-flex; 
+    align-items: center; 
+    padding: 6px 12px; 
+    border-radius: 16px; 
+    font-size: 0.85em; 
+    cursor: pointer; 
+    user-select: none; 
+    transition: 0.15s; 
+    border: 1px solid; 
+}
+
+.check-tag-pos { 
+    background: #f4fbf6; 
+    color: #1e7e34; 
+    border-color: #c3e6cb; 
+}
+
+.check-tag-pos:hover { 
+    background: #d4edda; 
+}
+
+.check-tag-neg { 
+    background: #fdf5f5; 
+    color: #bd2130; 
+    border-color: #f5c6cb; 
+}
+
+.check-tag-neg:hover { 
+    background: #f8d7da; 
+}
+
+.grid-tags input { 
+    margin-right: 6px; 
+    cursor: pointer; 
+}
+
+.seccion-cat-modal { 
+    border: 1px solid #eee; 
+    border-radius: 6px; 
+    padding: 15px; 
+    margin-bottom: 15px; 
+}
+
+.cat-titulo { 
+    margin: 0 0 10px 0; 
+    color: #2c3e50; 
+    font-size: 1.05em; 
+    border-bottom: 1px dashed #ddd; 
+    padding-bottom: 4px; 
+}
+
+/* ==========================================
+   Nuevas clases añadidas (Antes eran estilos inline)
+   ========================================== */
+.main-container {
+    padding: 20px; 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    font-family: Arial, sans-serif;
+}
+
+.container-profesor {
+    margin-bottom: 25px;
+}
+
+.card-info-profesor {
+    background: #fff; 
+    border-radius: 8px; 
+    padding: 20px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    border: 1px solid #ddd;
+}
+
+.profile-header {
+    display: flex; 
+    gap: 20px; 
+    align-items: center; 
+    justify-content: space-between; 
+    flex-wrap: wrap;
+}
+
+.profile-header-left {
+    display: flex; 
+    gap: 20px; 
+    align-items: center;
+}
+
+.avatar-placeholder {
+    background: #eee; 
+    border-radius: 50%; 
+    padding: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.avatar-svg {
+    color: #666;
+}
+
+.datos-principales h2 {
+    margin: 0; 
+    color: #333;
+}
+
+.tag-area {
+    color: #7A1C31; 
+    font-weight: bold; 
+    margin: 5px 0;
+}
+
+.tag-escuela {
+    margin: 5px 0;
+}
+
+.rating-general {
+    margin-top: 10px;
+}
+
+.estrella-dorada {
+    color: #FFD700; 
+    font-size: 1.2em;
+}
+
+.votos {
+    color: #666;
+}
+
+.btn-valoracion {
+    background: #7A1C31; 
+    color: white; 
+    border: none; 
+    padding: 12px 22px; 
+    border-radius: 25px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 0.95em; 
+    box-shadow: 0 2px 5px rgba(122,28,49,0.3);
+}
+
+.divisor {
+    border: 0; 
+    border-top: 1px solid #eee; 
+    margin: 20px 0;
+}
+
+.profile-body h3 {
+    color: #333; 
+    margin-bottom: 8px;
+}
+
+.profile-body p {
+    margin: 0 0 15px 0; 
+    color: #555;
+}
+
+.profile-body p.contacto {
+    margin: 0;
+}
+
+.historial-valoraciones {
+    background: #fff; 
+    border-radius: 8px; 
+    padding: 25px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    border: 1px solid #ddd;
+}
+
+.historial-valoraciones h3 {
+    border-bottom: 2px solid #7A1C31; 
+    padding-bottom: 10px; 
+    margin-top: 0; 
+    color: #333;
+}
+
+.resumen-tags-container {
+    margin-top: 15px;
+}
+
+.msg-sin-votos {
+    color: #666; 
+    font-size: 0.9em; 
+    margin-bottom: 20px;
+}
+
+.subtitulo-categoria {
+    font-weight: bold; 
+    color: #444; 
+    margin-top: 10px;
+}
+
+.subtitulo-categoria.espaciado {
+    margin-top: 15px;
+}
+
+/* Estilos del Formulario y Modal */
+.modal-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid #7A1C31; 
+    padding-bottom: 10px; 
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    margin: 0; 
+    color: #7A1C31;
+}
+
+.btn-cerrar-modal {
+    cursor: pointer; 
+    font-size: 1.5em; 
+    font-weight: bold; 
+    color: #aaa;
+}
+
+.calificacion-container {
+    margin-bottom: 20px; 
+    background: #f9f9f9; 
+    padding: 12px; 
+    border-radius: 6px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+}
+
+.calificacion-container select {
+    padding: 6px; 
+    border-radius: 4px; 
+    border: 1px solid #ccc; 
+    font-size: 0.95em;
+}
+
+.modal-instruccion {
+    font-size: 0.9em; 
+    color: #666; 
+    margin-bottom: 15px;
+}
+
+.modal-form-grid {
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px;
+}
+
+.tags-positivos-titulo {
+    color: #27ae60; 
+    font-size: 0.8em; 
+    font-weight: bold; 
+    margin-top: 5px;
+}
+
+.tags-negativos-titulo {
+    color: #c0392b; 
+    font-size: 0.8em; 
+    font-weight: bold;
+}
+
+.modal-footer {
+    text-align: right; 
+    border-top: 1px solid #eee; 
+    padding-top: 15px; 
+    margin-top: 15px;
+}
+
+.btn-cancelar {
+    background: #ccc; 
+    color: #333; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    margin-right: 10px;
+}
+
+.btn-guardar {
+    background: #7A1C31; 
+    color: white; 
+    border: none; 
+    padding: 10px 25px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-weight: bold;
+}

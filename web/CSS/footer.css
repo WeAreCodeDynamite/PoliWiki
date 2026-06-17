@@ -1,0 +1,59 @@
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    div {
+        padding: 1rem;
+        align-items: center;
+        text-align: left;
+    }
+
+    .about {
+        max-width: 20%;
+    }
+
+    .infoPoliWiki {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .logo {
+        width: 5rem;
+    }
+
+    ul {
+        padding: 0;
+    }
+
+    .nombre {
+        text-align: left;
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+
+    p {
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+
+    a,
+    li {
+        color: #FFFFFF;
+        font-size: 12px;
+        list-style-type: none;
+        text-decoration: none;
+    }
+
+    bottom: 0;
+    background-color: #5A1236;
+
+    img {
+        width: 0.5rem;
+    }
+
+    input {
+        visibility: hidden;
+    }
+}

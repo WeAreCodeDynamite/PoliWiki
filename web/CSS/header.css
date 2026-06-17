@@ -1,0 +1,123 @@
+/* 1. RESET GLOBAL Y TIPOGRAFÍA */
+/* Aplicamos esto para que todo el sitio use la misma fuente y evitemos Times New Roman */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    background-color: #f9f9f9;
+}
+
+table, td, th {
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+}
+
+/* 2. HEADER BLINDADO */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background-color: #ffffff;
+    width: 100%;
+    min-height: 80px;  /* Altura fija para que no se encoja */
+    max-height: 80px;
+    flex-shrink: 0;    /* Evita que otros elementos lo deformen */
+    border-bottom: 2px solid #6A1B29; /* Estética IPN */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 3. BRAND (LOGO Y TEXTO) */
+.brand-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.brand-container .logo {
+    width: 60px;
+    height: 60px;
+    min-width: 60px; /* Evita que se aplaste */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.eslogan h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #6A1B29;
+    line-height: 1.1;
+}
+
+.eslogan p {
+    margin: 0;
+    font-size: 12px;
+    color: #555555;
+}
+
+/* 4. CONTENEDOR DE USUARIO/AUTH */
+.auth-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* 5. BOTONES */
+.btn-auth, .btn-logout {
+    display: inline-block;
+    background-color: #6A1B29;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-auth:hover {
+    background-color: #4A101C;
+}
+
+.signup {
+    background-color: transparent;
+    color: #6A1B29;
+    border: 2px solid #6A1B29;
+}
+
+.signup:hover {
+    background-color: #6A1B29;
+    color: white;
+}
+
+/* 6. USUARIO LOGUEADO */
+.user-logged-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.user-welcome {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.user-career {
+    font-size: 11px;
+    color: #6A1B29;
+    font-style: italic;
+}

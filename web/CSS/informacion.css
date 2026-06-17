@@ -1,0 +1,372 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+* {
+    box-sizing: border-box; /* CORREGIDO: Evita que los paddings rompan el ancho de modales e inputs */
+}
+
+body {
+    margin: 0;
+    background-color: #f8fafc; /* Fondo suave para resaltar las tarjetas blancas */
+}
+
+.contenedor-principal {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- SECCIÓN BIENVENIDA --- */
+.bienvenida-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.texto-bienvenida h2 {
+    font-size: 26px;
+    color: #111;
+    margin: 0 0 5px 0;
+}
+.texto-bienvenida p {
+    color: #666;
+    margin: 0;
+}
+.btn-crear {
+    background-color: #7A1C33; /* Guinda institucional IPN */
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.btn-crear:hover {
+    background-color: #5A1223;
+}
+.btn-crear:active {
+    transform: scale(0.98);
+}
+
+/* --- TARJETAS (CARDS DATO) --- */
+.lista-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.card-dato {
+    background: #fff;
+    border: 1px solid #eef0f2;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-dato:hover {
+    transform: translateY(-2px); /* Efecto sutil al pasar el mouse */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+.card-cuerpo {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.card-contenido-izq {
+    flex: 1;
+}
+
+/* Info de Usuario */
+.usuario-bloque {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.avatar-generico {
+    width: 40px;
+    height: 40px;
+    background-color: #e2e8f0;
+    border-radius: 50%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0aec0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z"/></svg>');
+    background-size: 65%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.usuario-info {
+    display: flex;
+    flex-direction: column;
+}
+.usuario-nombre {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 14px;
+}
+.usuario-carrera {
+    font-size: 12px;
+    color: #718096;
+}
+
+/* Badges y Tags */
+.badge-tipo {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    padding: 2px 8px; /* CORREGIDO: Espaciado interno para lucir como etiqueta real arriba del título */
+    border-radius: 4px;
+}
+.card-titulo {
+    font-size: 18px;
+    margin: 5px 0 10px 0;
+}
+.card-titulo a {
+    color: #1a202c;
+    text-decoration: none;
+}
+.card-titulo a:hover {
+    color: #7A1C33;
+}
+.card-texto {
+    color: #4a5568;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+.card-tags {
+    display: flex;
+    flex-wrap: wrap; /* CORREGIDO: Permite que los temas bajen de renglón si son demasiados */
+    gap: 8px;
+}
+
+/* Bloque Adjunto Derecho (Estilo PDF / Precio) */
+.card-adjunto-der {
+    width: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.preview-pdf {
+    width: 100%;
+    height: 90px;
+    background: #f7fafc;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pdf-icon {
+    font-size: 28px;
+}
+.pdf-tag {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #e53e3e;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Footer de Tarjeta */
+.card-footer {
+    border-top: 1px solid #edf2f7;
+    margin-top: 15px;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    color: #718096;
+    font-size: 13px;
+}
+
+/* ==================== SECCIÓN: VENTANA MODAL ==================== */
+.modal-overlay {
+    display: none; /* Controlado por JavaScript ('flex') */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); 
+    align-items: center;
+    justify-content: center;
+    z-index: 99999; /* Por encima de Navbar superior */
+}
+
+.modal-content {
+    background: white;
+    width: 550px;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalEntrada 0.2s ease-out;
+}
+
+@keyframes modalEntrada {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #1a202c;
+}
+
+/* Pestañas del Formulario */
+.pestanas-tipo {
+    display: flex;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.tab-btn {
+    flex: 1;
+    background: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #4a5568;
+    transition: background 0.2s;
+}
+.tab-btn:not(:last-child) {
+    border-right: 1px solid #e2e8f0;
+}
+.tab-btn.activo {
+    background: #f7e6e9;
+    color: #7A1C33;
+    font-weight: bold;
+}
+
+/* Inputs del Formulario */
+.form-publicacion label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 6px;
+    margin-top: 14px;
+}
+.form-publicacion input[type="text"],
+.form-publicacion input[type="number"],
+.form-publicacion select,
+.form-publicacion textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Zona de Arrastre de Archivos */
+.zona-drop {
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background: #f7fafc;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.zona-drop:hover {
+    border-color: #7A1C33;
+}
+.upload-icon {
+    font-size: 24px;
+}
+.zona-drop p {
+    font-size: 12px;
+    color: #718096;
+    margin: 8px 0;
+}
+.btn-adjuntos-fake {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+.btn-fake {
+    font-size: 12px;
+    color: #4a5568;
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* Botones de acción inferiores */
+.modal-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+.btn-cancelar {
+    background: white;
+    border: 1px solid #cbd5e0;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-cancelar:hover {
+    background: #f7fafc;
+}
+.btn-publicar {
+    background: #7A1C33;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.btn-publicar:hover {
+    background-color: #5A1223;
+}
+
+/* ==================== CLASES DE ESTILOS DINÁMICOS (TAGS Y BADGES) ==================== */
+.card-tags .tag-item {
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    border: none;
+}
+
+/* CORREGIDO: Estilos unificados para tarjetas y badges superiores */
+.tipo-tag-material { background-color: #e3f2fd !important; color: #0d47a1 !important; }
+.tipo-tag-pregunta { background-color: #ffebee !important; color: #b71c1c !important; }
+.tipo-tag-apuntes { background-color: #e8f5e9 !important; color: #1b5e20 !important; }
+.tipo-tag-marketplace { background-color: #fff3e0 !important; color: #e65100 !important; }
+
+.preview-foto-muro {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.preview-foto-muro img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Evita que la foto se distorsione */
+}

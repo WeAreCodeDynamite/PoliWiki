@@ -1,0 +1,357 @@
+/* --- DISEÑO DEL MARKETPLACE (ESTILO POLIWIKI) --- */
+
+:root {
+    --color-guinda: #6A1B29;
+    --color-guinda-light: #8A2536;
+    --color-gris-texto: #666666;
+    --color-borde: #E0E0E0;
+    --bg-tarjeta: #FFFFFF;
+}
+
+.contenedor-marketplace {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-marketplace {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.titulo-seccion h2 {
+    font-size: 28px;
+    color: #333;
+    margin: 0 0 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.titulo-seccion p {
+    color: var(--color-gris-texto);
+    margin: 0;
+    font-size: 15px;
+}
+
+.btn-crear {
+    background-color: var(--color-guinda);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.btn-crear:hover {
+    background-color: var(--color-guinda-light);
+}
+
+/* Barra de Búsqueda */
+.barra-busqueda-container {
+    margin-bottom: 30px;
+}
+
+.input-busqueda-icono {
+    position: relative;
+    max-width: 450px;
+}
+
+.input-busqueda-icono i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.input-busqueda-icono input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid var(--color-borde);
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    background-color: #FAFAFA;
+    transition: all 0.3s ease;
+}
+
+.input-busqueda-icono input:focus {
+    border-color: var(--color-guinda);
+    background-color: #FFF;
+    box-shadow: 0 0 5px rgba(106, 27, 41, 0.2);
+}
+
+.subtitulo-seccion {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Grid de Tarjetas */
+.grid-marketplace {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* Tarjeta Estilo UI */
+.card-producto {
+    background: var(--bg-tarjeta);
+    border: 1px solid #EAEAEA;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-producto:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.contenedor-imagen {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background-color: #F7F7F7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 10px;
+}
+
+.badge-estado {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: var(--color-guinda);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.info-producto {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.titulo-item {
+    font-size: 14px;
+    color: #222;
+    margin: 0 0 6px 0;
+    font-weight: 600;
+    line-height: 1.3;
+    height: 36px; /* Forzar el corte a dos líneas */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.precio-item {
+    font-size: 16px;
+    font-weight: bold;
+    color: #111;
+    margin: 0 0 12px 0;
+}
+
+.detalles-vendedor {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--color-gris-texto);
+    margin-bottom: 12px;
+}
+
+.detalles-vendedor i {
+    margin-right: 4px;
+}
+
+.perfil-resumen {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid #F0F0F0;
+    padding-top: 10px;
+    margin-top: auto;
+}
+
+.avatar-anonimo {
+    font-size: 20px;
+    color: #CCC;
+    display: flex;
+    align-items: center;
+}
+
+.nombre-vendedor {
+    font-size: 12px;
+    color: #555;
+    font-weight: 500;
+}
+
+.sin-resultados {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.sin-resultados i {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+/* ==========================================
+   ESTILOS DEL MODAL Y FORMULARIO
+   ========================================== */
+.modal-marketplace {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Truco CSS: Cuando el href del botón (#modalCrear) coincide con el ID, se muestra */
+.modal-marketplace:target {
+    display: flex;
+}
+
+.modal-contenido {
+    background: #ffffff;
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: entradaModal 0.3s ease;
+}
+
+@keyframes entradaModal {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #800020; /* Color guinda institucional opcional o el de tu tema */
+}
+
+.btn-cerrar-modal {
+    font-size: 28px;
+    text-decoration: none;
+    color: #aaa;
+}
+.btn-cerrar-modal:hover { color: #333; }
+
+/* Campos del Formulario */
+.formulario-modal .grupo-campo {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.formulario-modal .grupo-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.formulario-modal label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+    font-size: 14px;
+}
+
+.formulario-modal input[type="text"],
+.formulario-modal input[type="number"],
+.formulario-modal select,
+.formulario-modal textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.formulario-modal input:focus,
+.formulario-modal select:focus,
+.formulario-modal textarea:focus {
+    border-color: #800020;
+}
+
+/* Botones de acción */
+.modal-pie {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    border-top: 1px solid #f1f1f1;
+    padding-top: 15px;
+}
+
+.btn-cancelar {
+    background: #e0e0e0;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-guardar {
+    background: #800020;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+.btn-guardar:hover { background: #5a0016; }
+
+/* --- CORRECCIÓN PARA LA VISTA DE DETALLE --- */
+
+/* Asegura que el badge se mantenga en su bloque de texto y respete el flujo */
+.card-detalle-producto .badge-estado {
+    position: static;
+    display: inline-block;
+    margin-bottom: 12px;
+    font-size: 12px;     /* Un poquito más grande para que luzca mejor en el detalle */
+    padding: 5px 10px;
+}

@@ -1,0 +1,193 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #fafbfc;
+    color: #333333;
+    /* ¡OJO! Aquí NO debe haber display: flex; ni flex-direction */
+}
+
+/* --- SECCIÓN PRINCIPAL DE LA PORTADA (Aquí sí va el flex) --- */
+.contenidoPrincipal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 8%;
+    background: radial-gradient(circle at 80% 50%, #fbf5f5 0%, #ffffff 100%);
+    min-height: 80vh;
+}
+
+.contenido {
+    max-width: 50%;
+}
+
+.contenido h2 {
+    font-size: 3.5rem;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.logoTexto {
+    color: #66002c; /* Color guinda característico */
+}
+
+.subtitulo {
+    font-style: italic;
+    color: #666666;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.contenido p:not(.subtitulo) {
+    font-size: 1.1rem;
+    color: #555556;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+/* Botones */
+.botones {
+    display: flex;
+    gap: 15px;
+}
+
+.botones button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.explorar {
+    background-color: #66002c;
+    color: #ffffff;
+    border: none;
+}
+
+.explorar:hover {
+    background-color: #4a0020;
+}
+
+.conocer {
+    background-color: transparent;
+    color: #66002c;
+    border: 2px solid #66002c;
+}
+
+.conocer:hover {
+    background-color: #f5eaeef3;
+}
+
+/* Imagen de Portada */
+.imagen {
+    max-width: 45%;
+    display: flex;
+    justify-content: center;
+}
+
+.imagen img {
+    width: 100%;
+    height: auto;
+    max-width: 550px;
+    object-fit: contain;
+}
+
+/* --- SECCIÓN DE FUNCIONES (TARJETAS) --- */
+.funciones {
+    padding: 60px 8%;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.funciones h2 {
+    font-size: 2.2rem;
+    color: #222222;
+    margin-bottom: 40px;
+}
+
+.funciones h2 span {
+    color: #66002c;
+}
+
+/* Contenedor de Tarjetas */
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Tarjeta Individual */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #eef0f2;
+    border-radius: 12px;
+    padding: 20px;
+    width: 320px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(102, 0, 44, 0.08);
+}
+
+/* Iconos circulares dentro de las tarjetas */
+.card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #66002c; /* Por si el fondo del icono original es transparente */
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #666666;
+    line-height: 1.4;
+}
+
+/* --- RESPONSIVE / ADAPTACIÓN A MÓVILES --- */
+@media (max-width: 768px) {
+    .contenidoPrincipal {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 40px 5%;
+    }
+
+    .contenido, .imagen {
+        max-width: 100%;
+    }
+
+    .imagen {
+        margin-bottom: 30px;
+    }
+
+    .botones {
+        justify-content: center;
+    }
+
+    .contenido h2 {
+        font-size: 2.5rem;
+    }
+}

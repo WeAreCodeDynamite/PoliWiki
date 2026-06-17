@@ -1,0 +1,197 @@
+/* ==========================================================================
+   Estilos específicos para la vista de Detalle de Trámite (Estilo Foro)
+   ========================================================================== */
+
+.detalle-tramite {
+    width: 100%;
+}
+
+/* Botón de regreso */
+.btn-volver {
+    text-decoration: none;
+    color: #718096;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.btn-volver:hover {
+    color: #66102b;
+}
+
+/* Etiquetas superiores */
+.categoria-tag {
+    color: #66102b;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.titulo-detalle {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #1a202c;
+}
+
+.descripcion-detalle {
+    color: #4a5568;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Bloque de documentación o sitio oficial */
+.bloque-documentos {
+    background-color: #f8fafc;
+    border: 1px dashed #66102b;
+    padding: 18px;
+    border-radius: 8px;
+    margin: 20px 0 30px 0;
+}
+
+.bloque-documentos h4 {
+    margin: 0 0 8px 0;
+    color: #1a202c;
+    font-size: 15px;
+}
+
+.bloque-documentos p {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    color: #4a5568;
+}
+
+.link-oficial {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #66102b;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 13px;
+    transition: text-decoration 0.2s;
+}
+
+.link-oficial:hover {
+    text-decoration: underline;
+}
+
+/* Sección de comentarios y respuestas (Sin foto de perfil) */
+.seccion-comentarios-titulo {
+    font-size: 18px;
+    color: #66102b;
+    margin: 30px 0 15px 0;
+    font-weight: bold;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 8px;
+}
+
+/* MODIFICADO: Se añade la barra lateral guinda y se ajusta el padding izquierdo */
+.caja-comentario {
+    background: #ffffff;
+    border: 1px solid #edf2f7;
+    border-left: 3px solid #66102b; /* <-- ESTA ES LA LÍNEA ROJA DEL FORO */
+    padding: 15px 15px 15px 20px;   /* Mayor espacio a la izquierda para la barra */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
+}
+
+.info-autor-bloque {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.autor-comentario {
+    font-weight: 600;
+    color: #1a202c;
+    font-size: 14px;
+}
+
+.carrera-comentario {
+    color: #718096;
+    font-size: 12px;
+    margin-top: 1px;
+}
+
+.fecha-comentario {
+    font-size: 11px;
+    color: #a0aec0;
+    margin-top: 2px;
+}
+
+.texto-comentario {
+    font-size: 13.5px;
+    color: #4a5568;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Formulario para agregar comentarios nuevos */
+.form-comentario {
+    margin-top: 20px;
+}
+
+.form-comentario textarea {
+    width: 100%;
+    height: 90px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 13px;
+    transition: border-color 0.2s;
+}
+
+.form-comentario textarea:focus {
+    border-color: #66102b;
+}
+
+.btn-comentar {
+    background-color: #66102b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 8px;
+    float: right;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.btn-comentar:hover {
+    background-color: #4a0b1e;
+}
+
+.limpiar {
+    clear: both;
+}
+
+/* Alertas para usuarios invitados */
+.invitado-alerta {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #718096;
+    margin-top: 20px;
+}
+
+.invitado-alerta a {
+    color: #66102b;
+    font-weight: bold;
+    text-decoration: underline;
+}

@@ -1,0 +1,527 @@
+/* =========================================================================
+   PALETA DE COLORES GLOBALES
+   ========================================================================= */
+:root {
+    --guinda-principal: #6A1B29;
+    --guinda-oscuro: #4A101A;
+    --guinda-claro: #F4EAEB;
+    --texto-oscuro: #333333;
+    --texto-gris: #666666;
+    --gris-fondo: #F9F9F9;
+    --borde: #EAEAEA;
+    --verde-tag: #E2F0D9;
+    --verde-texto: #385723;
+}
+
+body {
+    background-color: #FFFFFF;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--texto-oscuro);
+    margin: 0;
+}
+
+/* Margen superior optimizado para la Navbar */
+.contenedor-eventos {
+    max-width: 1200px;
+    margin: 10px auto 30px auto; 
+    padding: 0 20px;
+}
+
+/* Buscador y Header */
+.eventos-header h1 {
+    font-size: 2rem;
+    color: var(--texto-oscuro);
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.eventos-header p {
+    color: var(--texto-gris);
+    margin-bottom: 20px;
+}
+.buscador-container {
+    position: relative;
+    max-width: 400px;
+    margin-bottom: 30px;
+}
+
+/* Input adaptado al diseño de píldora solicitado */
+.input-buscar {
+    width: 100%;
+    padding: 12px 18px 12px 45px; /* Relleno amplio para evitar colisión con el icono */
+    border: 1px solid transparent; /* Sin borde agresivo inicial */
+    background-color: white; /* Usamos tu fondo gris suave */
+    border-radius: 30px;          /* Bordes súper redondeados estilo píldora */
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.2s ease;    /* Transición suave para todos los estados */
+    color: var(--texto-oscuro);
+}
+
+/* Efecto Focus adaptado con tus variables institucionales */
+.input-buscar:focus {
+    background-color: #ffffff;
+    border-color: var(--guinda-principal); /* Tu color guinda institucional (#6A1B29) */
+    box-shadow: 0 2px 8px rgba(106, 27, 41, 0.15); /* Sombra difuminada guinda */
+}
+
+/* Icono de lupa alineado con el nuevo padding del input */
+.icono-buscar {
+    position: absolute;
+    left: 16px; /* Ajustado ligeramente a la derecha para centrarse en la curva */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texto-gris);
+    transition: color 0.2s ease;
+    pointer-events: none; /* Evita que interfiera con los clics en el input */
+}
+
+/* Cambio estético opcional: cambiar el color del icono cuando el input esté activo */
+.input-buscar:focus + .icono-buscar {
+    color: var(--guinda-principal);
+}
+
+/* Layout en 2 columnas */
+.eventos-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .eventos-layout {
+        grid-template-columns: 1fr;
+    }
+    .eventos-sidebar {
+        margin-top: 0;
+    }
+}
+
+.eventos-main-content h2 {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    color: var(--texto-oscuro);
+}
+
+/* Cards horizontales de Eventos */
+.card-evento-horizontal {
+    display: grid;
+    grid-template-columns: 140px 1fr 100px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #FFF;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    transition: transform 0.2s;
+}
+
+.card-evento-horizontal:hover {
+    transform: translateY(-2px);
+}
+
+.card-imagen {
+    background-color: #2D091A; 
+    background-size: cover;
+    background-position: center;
+}
+
+.card-info {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tag-tipo {
+    font-size: 0.75rem;
+    color: #C00000;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.card-info h3 {
+    margin: 5px 0;
+    font-size: 1.15rem;
+    color: var(--texto-oscuro);
+}
+
+.descripcion-corta {
+    font-size: 0.9rem;
+    color: var(--texto-gris);
+    margin-bottom: 10px;
+}
+
+.card-detalles {
+    font-size: 0.85rem;
+    color: var(--texto-gris);
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.tag-categoria {
+    background-color: var(--verde-tag);
+    color: var(--verde-texto);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    width: fit-content;
+}
+
+/* Sección de fecha dentro de la Card */
+.card-fecha-accion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--borde);
+    padding: 15px;
+    position: relative;
+}
+
+.fecha-badge {
+    text-align: center;
+}
+
+.fecha-badge .dia {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #C00000;
+    line-height: 1;
+}
+
+.fecha-badge .mes {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--texto-gris);
+}
+
+.card-fecha-accion .hora {
+    font-size: 0.8rem;
+    color: var(--texto-gris);
+    margin-top: 5px;
+}
+
+.btn-guardar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--texto-gris);
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.btn-guardar:hover {
+    color: var(--guinda-principal);
+}
+
+/* SIDEBAR STYLES */
+.eventos-sidebar {
+    margin-top: 5px; 
+}
+
+.widget-proximos {
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #FFF;
+    margin-bottom: 25px;
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.widget-header h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.link-ver-todos {
+    font-size: 0.8rem;
+    color: var(--texto-gris);
+    text-decoration: none;
+}
+
+.lista-mini-eventos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.mini-evento {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.mini-evento:last-child {
+    border-bottom: none;
+}
+
+.mini-fecha {
+    text-align: center;
+    min-width: 35px;
+}
+
+.mini-fecha strong {
+    display: block;
+    color: #C00000;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.mini-fecha span {
+    font-size: 0.7rem;
+    color: var(--texto-gris);
+}
+
+.mini-info h4 {
+    margin: 0 0 3px 0;
+    font-size: 0.9rem;
+}
+
+.mini-info p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--texto-gris);
+}
+
+.mini-icono {
+    margin-left: auto;
+    color: var(--texto-gris);
+    font-size: 0.9rem;
+}
+
+.btn-calendario-completo {
+    width: 100%;
+    padding: 10px;
+    background: none;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-calendario-completo:hover {
+    background-color: var(--gris-fondo);
+}
+
+/* =========================================================================
+   MEJORAS AL BANNER DE ORGANIZAR (ILUSTRACIÓN MÁS GRANDE Y CORRECTA)
+   ========================================================================= */
+.banner-organizar {
+    background-color: #720B36;
+    color: #FFFFFF;
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-organizar h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    max-width: 75%;
+}
+
+.banner-organizar p {
+    font-size: 0.85rem;
+    margin: 0 0 20px 0;
+    opacity: 0.9;
+    max-width: 75%;
+}
+
+.btn-publicar {
+    background-color: #FFFFFF;
+    color: var(--guinda-principal);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-publicar:hover {
+    background-color: var(--guinda-claro);
+}
+
+.ilustracion-calendario {
+    position: absolute;
+    bottom: -15px;       /* Se desplaza levemente hacia abajo para un mejor efecto visual */
+    right: 5px;
+    width: 150px;        /* ¡Aumentado de 90px a 125px como solicitaste! */
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.img-calendario-banner {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* =========================================================================
+   VENTANA MODAL FLOTANTE MEJORADA CON FONDO COMBINADO
+   ========================================================================= */
+.modal-container {
+    display: none; /* JavaScript cambiará esto a 'flex' al abrir */
+    position: fixed;
+    z-index: 3000; /* Asegura que quede por encima de la navbar y el footer */
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px); /* Agrega un sutil desenfoque al fondo */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tarjeta del Formulario */
+.modal-contenido {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 14px;
+    width: 90%;
+    max-width: 520px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: aparecerModal 0.3s ease-out; /* Transición de entrada suave */
+}
+
+@keyframes aparecerModal {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-contenido::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-contenido::-webkit-scrollbar-thumb {
+    background-color: #CCCCCC;
+    border-radius: 4px;
+}
+
+/* Encabezado del Formulario */
+.modal-header-form {
+    border-bottom: 2px solid var(--guinda-claro);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.modal-header-form h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--guinda-principal);
+    font-weight: 700;
+}
+
+.modal-header-form p {
+    font-size: 0.88rem;
+    color: var(--texto-gris);
+    margin: 4px 0 0 0;
+    font-weight: 600;
+}
+
+/* Botón de Cerrar (X) */
+.btn-cerrar-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: var(--texto-gris);
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.btn-cerrar-modal:hover {
+    color: var(--guinda-principal);
+}
+
+/* Estructura de Campos */
+.grupo-formulario {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.grupo-formulario-doble {
+    display: flex;
+    gap: 15px;
+}
+
+.grupo-formulario-doble .grupo-formulario {
+    flex: 1;
+}
+
+.grupo-formulario label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: var(--texto-oscuro);
+}
+
+.grupo-formulario input, 
+.grupo-formulario select, 
+.grupo-formulario textarea {
+    padding: 11px 14px;
+    border: 1px solid #CCCCCC;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    background-color: #FFFFFF;
+    color: var(--texto-oscuro);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.grupo-formulario input:focus, 
+.grupo-formulario select:focus, 
+.grupo-formulario textarea:focus {
+    border-color: var(--guinda-principal);
+    box-shadow: 0 0 0 3px rgba(106, 27, 41, 0.1);
+}
+
+.grupo-formulario select {
+    cursor: pointer;
+}
+
+/* Botón de envío */
+.btn-guardar-form {
+    margin-top: 10px;
+    width: 100%;
+    padding: 13px;
+    background-color: var(--guinda-principal);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-guardar-form:hover {
+    background-color: var(--guinda-oscuro);
+}

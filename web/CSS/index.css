@@ -1,0 +1,597 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    font-size: 90%;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 100%;
+
+    #boton_menu_lateral {
+        padding-left: 2rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        font-size: 30px;
+        cursor: pointer;
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            border-left: solid 3px #5A1236;
+            border-radius: 8px;
+            background-color: #F8F4F8;
+        }
+    }
+
+    form {
+        display: flex;
+        border: solid 0.5px #757575;
+        background-color: #D1D1D1;
+
+        #barraBusqueda {
+            background-color: #D1D1D1;
+            color: #757575;
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+        label {
+            margin: 0;
+            padding: 0;
+        }
+
+        input {
+            border: none;
+            outline: none;
+            box-shadow: none;
+            max-height: 2rem;
+        }
+
+        svg {
+            width: 1rem;
+            height: auto;
+        }
+    }
+
+    .logo {
+        width: 8%;
+        padding: 1rem;
+    }
+
+    .eslogan {
+        font-size: small;
+        text-align: left;
+        min-width: 20rem;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        margin: 0;
+        padding: 0;
+        font-family: Arial;
+        flex-grow: 0;
+        width: 10%;
+
+    }
+
+    .auth {
+        margin-left: 2rem;
+        justify-content: space-around;
+        width: 80%;
+    }
+
+    .login {
+        padding: 0.5rem;
+        width: 30%;
+        text-decoration: none;
+        border: solid 1px #5A1236;
+        color: #5A1236;
+        border-radius: 15px;
+    }
+
+    .signup {
+        padding: 0.5rem;
+        width: 30%;
+        text-decoration: none;
+        border: solid 1px #5A1236;
+        background-color: #5A1236;
+        color: #FFFFFF;
+        border-radius: 15px;
+    }
+}
+
+.vistaPrincipal {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+main {
+    width: 100%;
+
+    section.contenido {
+        min-height: 20%;
+    }
+}
+
+nav {
+    min-width: 100%;
+    height: 0.5rem;
+    margin: 0;
+    padding: 1rem;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+
+    img {
+        width: 10%;
+    }
+
+
+
+    a {
+        position: relative;
+        font-weight: bold;
+        text-decoration: none;
+        color: #5A1236;
+        padding: 0.3rem;
+    }
+
+    a:hover {
+        border-bottom: solid #5A1236 1px;
+    }
+
+    #info {
+        border-left: none;
+    }
+
+    .navLinks {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+aside {
+    width: 30%;
+    margin-right: 5px;
+    box-shadow: 10px 5px 5px #dcdcdc;
+
+    P {
+        margin: 0.8rem;
+    }
+
+    li {
+        font-size: 65%;
+        margin: 1rem;
+        border-radius: 15px;
+        list-style: none;
+    }
+
+    div {
+        border-bottom: solid 1px #dcdcdc;
+    }
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    div {
+        padding: 1rem;
+        align-items: center;
+        text-align: left;
+    }
+
+    .about {
+        max-width: 20%;
+    }
+
+    .infoPoliWiki {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .logo {
+        width: 5rem;
+    }
+
+    ul {
+        padding: 0;
+    }
+
+    .nombre {
+        text-align: left;
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+
+    p {
+        color: #FFFFFF;
+        font-size: 8px;
+    }
+
+    a,
+    li {
+        color: #FFFFFF;
+        font-size: 8px;
+        list-style-type: none;
+        text-decoration: none;
+    }
+
+    bottom: 0;
+    background-color: #5A1236;
+
+    img {
+        width: 0.5rem;
+    }
+
+    input {
+        visibility: hidden;
+    }
+}
+
+.foros {
+    ul {
+        display: flex;
+    }
+
+    li {
+        border-radius: 15px;
+        margin: 1rem;
+        padding: 1rem;
+        background-color: #5A1236;
+        color: #FFFFFF;
+    }
+
+    .publicacion {
+        margin: 1rem;
+        border: solid 2px #dcdcdc;
+        border-radius: 15px;
+
+        .titulo {
+            font-weight: bold;
+        }
+
+        .autor {
+            font-weight: bold;
+            font-size: 75%;
+        }
+
+        .informacion {
+            font-weight: bold;
+            text-align: end;
+        }
+    }
+}
+
+.apuntePDF {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    a{
+        margin: 5px;
+        color: black;
+        text-decoration: none;
+    }
+    .pdf-titulo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .pdf-frame {
+        border: none;
+    }
+}
+
+.listaMejor{
+    display: flex;
+    li{
+        padding: 0.5rem;
+        width: 15%;
+        text-decoration: none;
+        border: solid 1px #5A1236;
+        background-color: #5A1236;
+        color: #FFFFFF;
+        border-radius: 15px;
+        list-style-type: none;
+    }
+    
+}
+
+.eventosMain{
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f8f8f8;
+    padding:30px;
+}
+
+.container{
+    display:flex;
+    gap:30px;
+}
+
+/* CONTENIDO PRINCIPAL */
+
+.main-content{
+    flex:1;
+}
+
+.page-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.page-title i{
+    font-size:28px;
+}
+
+.page-title h1{
+    font-size:42px;
+}
+
+.description{
+    color:#555;
+    margin-bottom:30px;
+    font-size:18px;
+}
+
+/* TABS */
+
+.tabs{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.tab{
+    border:none;
+    background:white;
+    border:1px solid #ddd;
+    padding:12px 28px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.tab.active{
+    background:#8a003f;
+    color:white;
+}
+
+/* SEARCH */
+
+.search-box{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:25px;
+}
+
+.search-box input{
+    border:none;
+    outline:none;
+    width:100%;
+    font-size:15px;
+}
+
+.section-title{
+    margin-bottom:15px;
+    font-size:28px;
+}
+
+/* CARD */
+
+.tramite-card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border:1px solid #ececec;
+    box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+
+.card-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.icon-box{
+    width:60px;
+    height:60px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:26px;
+}
+
+.red{
+    background:#8a003f;
+}
+
+.purple{
+    background:#6b3fb5;
+}
+
+.green{
+    background:#69b23e;
+}
+
+.orange{
+    background:#e57c23;
+}
+
+.teal{
+    background:#2a9d8f;
+}
+
+.blue{
+    background:#3f72b5;
+}
+
+.card-info h3{
+    margin-bottom:5px;
+    font-size:28px;
+}
+
+.department{
+    color:#8a003f;
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+.card-info p{
+    color:#666;
+}
+
+.card-right{
+    min-width:180px;
+}
+
+.card-right div{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#666;
+    margin-bottom:10px;
+}
+
+/* EVENTOS */
+
+.events{
+    width:320px;
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    border:1px solid #ececec;
+    height:fit-content;
+}
+
+.events-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.events-header a{
+    text-decoration:none;
+    color:#8a003f;
+    font-size:14px;
+}
+
+.event{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.date{
+    text-align:center;
+    min-width:50px;
+}
+
+.date span{
+    display:block;
+    font-size:28px;
+    font-weight:bold;
+    color:#8a003f;
+}
+
+.date small{
+    color:#8a003f;
+    font-weight:600;
+}
+
+.event-info h4{
+    margin-bottom:5px;
+}
+
+.event-info p{
+    color:#666;
+    font-size:14px;
+}
+
+.calendar-btn{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:white;
+    color:#8a003f;
+    cursor:pointer;
+    font-weight:600;
+}
+
+@media(max-width:1100px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .events{
+        width:100%;
+    }
+
+}
+
+
+
+}

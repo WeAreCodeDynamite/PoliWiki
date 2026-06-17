@@ -1,0 +1,158 @@
+/* Contenedor principal con fondo de pantalla completa */
+/* --- CAMBIADO A UN NOMBRE ÚNICO --- */
+.registro-container {
+    background-image: url('../Imgs/fondoAuth.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    min-height: 85vh; /* Se asegura de cubrir el alto disponible */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente el formulario */
+    align-items: center;     /* Centra verticalmente el formulario */
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* Tarjeta Blanca del Formulario (Todo lo demás se queda exactamente igual) */
+.formulario {
+    background-color: #FFFFFF;
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 650px; /* Ancho ideal idéntico a la imagen */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.formulario img {
+    width: 70px; /* Ajuste de tamaño para el logotipo central */
+    margin-bottom: 10px;
+}
+
+.formulario h1 {
+    font-size: 24px;
+    color: #000000;
+    margin: 5px 0;
+    font-weight: 700;
+}
+
+.formulario .subtitulo {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 30px;
+}
+
+/* Sistema de Rejilla (2 Columnas) */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas simétricas */
+    gap: 20px; /* Espaciado entre campos */
+    text-align: left;
+}
+
+/* Forzar a que el correo ocupe las dos columnas */
+.full-width {
+    grid-column: span 2;
+}
+
+/* Grupos de entrada individuales */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 8px;
+}
+
+/* Estilo unificado para Inputs y Selects */
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"],
+.select-field {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #FAFAFA;
+    color: #333333;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus,
+.select-field:focus {
+    outline: none;
+    border-color: #5A1236; /* Color vino de PoliWiki al enfocar */
+    background-color: #FFFFFF;
+}
+
+/* Texto de ayuda de contraseña */
+.helper-text {
+    font-size: 11px;
+    color: #777777;
+    margin-top: 5px;
+}
+
+/* Contenedor de Términos y Condiciones */
+.terminos-container {
+    margin: 25px 0;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: #333333;
+}
+
+.terminos-container input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: #5A1236;
+}
+
+.terminos-container a {
+    color: #5A1236;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.terminos-container a:hover {
+    text-decoration: underline;
+}
+
+/* Botón de Enviar (Crear Cuenta) */
+#submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background-color: #5A1236; /* Color guinda institucional */
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#submit:hover {
+    background-color: #420b26;
+}
+
+/* Responsivo para pantallas pequeñas de celulares */
+@media (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* Cambia a una columna en móviles */
+    }
+    .full-width {
+        grid-column: span 1;
+    }
+    .formulario {
+        padding: 20px;
+    }
+}

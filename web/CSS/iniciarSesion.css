@@ -1,0 +1,114 @@
+/* Contenedor principal que ahora sí se centrará perfectamente */
+.login-container {
+    background-image: url('../Imgs/fondoAuth.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    min-height: 100vh; 
+    display: flex;
+    justify-content: center; /* Centra la tarjeta horizontalmente */
+    align-items: center;     /* Centra la tarjeta verticalmente */
+    box-sizing: border-box;
+}
+
+/* Tarjeta del formulario (Blanca) */
+.formulario {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 450px; /* Tamaño fijo ideal para tarjetas de Login */
+    padding: 2.5rem; /* Padding más controlado para que no rompa el diseño */
+    margin: 1.5rem;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Suave sombra para dar profundidad */
+    
+    /* Esquinas asimétricas: superior-izquierda muy redondeada, las demás normales */
+    border-radius: 60px 15px 15px 15px; 
+
+    /* Estilos internos */
+    h2 {
+        font-family: 'Arial', sans-serif; /* Cambia por tu fuente si usas otra */
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: #666666;
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column; /* Alinea los elementos hacia abajo */
+        text-align: left;
+        width: 100%;
+    }
+
+    img {
+        width: 6rem; /* Ajustado para que el logo de PoliWiki no sature la tarjeta */
+        margin-bottom: 1rem;
+    }
+
+    /* Estilos para las etiquetas y los contenedores de inputs */
+    label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #000000;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    /* Estilo general para los campos de texto (simulando los de la imagen) */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.25rem;
+        border: 1px solid #CCCCCC;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 0.9rem;
+        color: #333333;
+        transition: border-color 0.3s;
+
+        &:focus {
+            outline: none;
+            border-color: #6C1D45; /* Color guinda al dar foco */
+        }
+    }
+
+    /* Enlace de "¿Olvidaste tu contraseña?" */
+    .olvidaste-contrasenia {
+        display: block;
+        text-align: right;
+        color: #6C1D45;
+        font-size: 0.85rem;
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    
+    /* Botón de Iniciar Sesión (#submit) */
+    #submit {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        padding: 0.85rem;
+        border: none;
+        background-color: #6C1D45; /* El tono guinda institucional de la imagen */
+        color: #FFFFFF;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #521533; /* Un tono un poco más oscuro al pasar el cursor */
+        }
+    }
+}
