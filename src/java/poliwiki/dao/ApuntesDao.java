@@ -26,9 +26,6 @@ public class ApuntesDao {
         }
     }
 
-    // =========================================================================
-    // LISTAR PUBLICACIONES EXCLUSIVAMENTE DE TIPO 'Apuntes' (Público)
-    // =========================================================================
     public List<Map<String, Object>> listarPublicacionesApuntes() throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
         
@@ -53,7 +50,6 @@ public class ApuntesDao {
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
                 for (int i = 1; i <= columns; i++) {
-                    // CORREGIDO: Se usa getColumnLabel para mapear correctamente los alias (autor, respuestas)
                     row.put(md.getColumnLabel(i), rs.getObject(i));
                 }
                 lista.add(row);

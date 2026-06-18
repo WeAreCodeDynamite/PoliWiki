@@ -23,7 +23,6 @@
         <link href="CSS/materialEstudio.css" rel="stylesheet" />
         
         <style>
-            /* Estilos base compartidos para los modales tipo Alert */
             .modal-alert-overlay {
                 position: fixed;
                 top: 0;

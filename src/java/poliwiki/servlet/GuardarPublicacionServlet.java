@@ -183,7 +183,6 @@ public class GuardarPublicacionServlet extends HttpServlet {
                 redireccionBase = redirectToParam;
             }
 
-            // Codificamos el mensaje correctamente en UTF-8 para evitar problemas de caracteres y espacios en la URL
             String mensajeCodificado = URLEncoder.encode(mensajeStatus, "UTF-8");
             response.sendRedirect(redireccionBase + "?exito=true&msg=" + mensajeCodificado);
 
@@ -194,6 +193,7 @@ public class GuardarPublicacionServlet extends HttpServlet {
         }
     }
 
+   
     private String obtenerNombreArchivo(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         String[] tokens = contentDisp.split(";");
@@ -206,6 +206,7 @@ public class GuardarPublicacionServlet extends HttpServlet {
         return "archivo_anonimo";
     }
 
+    
     private String obtenerExtension(String nombreArchivo) {
         if (nombreArchivo == null || !nombreArchivo.contains(".")) {
             return "";
