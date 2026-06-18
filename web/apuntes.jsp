@@ -350,7 +350,7 @@
                     modal.classList.add('mostrar-modal');
                     
                     btnAceptar.onclick = function() {
-                        window.location.href = "EliminarPublicacionServlet?id=" + id;
+                        window.location.href = "EliminarPublicacionServlet?id=" + id + "&origen=apuntes.jsp";
                     };
                 }
             }

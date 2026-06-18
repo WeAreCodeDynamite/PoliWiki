@@ -25,29 +25,36 @@ public class EliminarPublicacionServlet extends HttpServlet {
         }
 
         String idParam = request.getParameter("id");
+        // Capturamos la vista de origen (foritos.jsp, apuntes.jsp, etc.)
+        String origen = request.getParameter("origen");
         
+        // Si no viene el parámetro 'origen' o está vacío, por defecto irá a material.jsp
+        if (origen == null || origen.trim().isEmpty()) {
+            origen = "material.jsp";
+        } else {
+            origen = origen.trim();
+        }
+
         if (idParam != null && !idParam.trim().isEmpty()) {
             try {
                 int idPublicacion = Integer.parseInt(idParam.trim());
                 
                 MaterialDao materialDao = new MaterialDao();
-                
-                
-                boolean eliminado = materialDao.eliminarPublicacion(idPublicacion); // <-- Asegúrate de tener este método en tu MaterialDao
+                boolean eliminado = materialDao.eliminarPublicacion(idPublicacion);
                 
                 if (eliminado) {
-                    response.sendRedirect("material.jsp?mensaje=EliminadoCorrectamente");
+                    response.sendRedirect(origen + "?mensaje=EliminadoCorrectamente");
                 } else {
-                    response.sendRedirect("material.jsp?error=NoSePudoEliminar");
+                    response.sendRedirect(origen + "?error=NoSePudoEliminar");
                 }
                 
             } catch (NumberFormatException e) {
-                response.sendRedirect("material.jsp?error=IdInvalido");
+                response.sendRedirect(origen + "?error=IdInvalido");
             } catch (Exception ex) {
                 throw new ServletException("Error al intentar eliminar la publicación en la base de datos", ex);
             }
         } else {
-            response.sendRedirect("material.jsp?error=FaltaId");
+            response.sendRedirect(origen + "?error=FaltaId");
         }
     }
 
