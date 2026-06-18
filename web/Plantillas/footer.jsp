@@ -41,7 +41,7 @@
         <p class="nombre">Sobre PoliWiki</p>
         <p>PoliWIki es una plataforma creada por y para
             estudiantes del IPN, con el objetivo de impulsar
-            la colaboración y el aprendizaje.
+            la colaboracion y el aprendizaje.
         </p>
     </div>
 

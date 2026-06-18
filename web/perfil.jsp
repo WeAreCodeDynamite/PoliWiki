@@ -112,11 +112,9 @@
                 border-radius: 10px; padding: 1px 7px; font-size: .7rem; margin-left: 5px;
             }
 
-            /* ── Paneles de contenido ── */
             .tab-panel { display: none; }
             .tab-panel.activo { display: block; }
 
-            /* ── Tarjetas de publicación ── */
             .pub-card {
                 background: #fff;
                 border: 1px solid #e8e8e8;
@@ -156,7 +154,6 @@
             .tag-positivo { background: #e6f4ea; color: #1e6e3c; }
             .tag-negativo { background: #fdecea; color: #b42318; }
 
-            /* ── Historial ── */
             .hist-card {
                 display: flex; align-items: center; gap: 16px;
                 background: #fff; border: 1px solid #e8e8e8;
@@ -168,11 +165,9 @@
             .hist-deshecha { opacity: .5; text-decoration: line-through; }
             .btn-deshacer { background: #f1f3f5; color: #333; border: 1px solid #ccc; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: .82rem; font-weight: 600; white-space: nowrap; }
 
-            /* ── Estado vacío ── */
             .vacio { text-align: center; padding: 40px 20px; color: #999; background: #fafbfc; border: 2px dashed #e0e0e0; border-radius: 10px; }
             .vacio p { margin-top: 8px; }
 
-            /* ── Toast ── */
             .toast-msg, .toast-err {
                 position: fixed; top: 20px; right: 20px; z-index: 9999;
                 padding: 12px 22px; border-radius: 8px; font-weight: 600;
@@ -187,7 +182,6 @@
         <%@include file="/Plantillas/header.jsp" %>
         <%@include file="/Plantillas/navBar.jsp" %>
 
-        <!-- Toasts -->
         <% if (request.getParameter("mensaje") != null) { %>
             <div class="toast-msg" id="toastOk"><%= request.getParameter("mensaje") %></div>
         <% } %>
@@ -267,7 +261,6 @@
                 </button>
             </div>
 
-            <!-- ==================== TAB FORO ==================== -->
             <div id="tab-foro" class="tab-panel activo">
                 <% if (publicaciones != null && !publicaciones.isEmpty()) {
                     for (Map<String, Object> pub : publicaciones) {
@@ -303,7 +296,6 @@
                 <% } %>
             </div>
 
-            <!-- ==================== TAB APUNTES ==================== -->
             <div id="tab-apuntes" class="tab-panel">
                 <% if (apuntes != null && !apuntes.isEmpty()) {
                     for (Map<String, Object> ap : apuntes) {
@@ -334,7 +326,6 @@
                 <% } %>
             </div>
 
-            <!-- ==================== TAB MATERIAL ==================== -->
             <div id="tab-material" class="tab-panel">
                 <% if (materiales != null && !materiales.isEmpty()) {
                     for (Map<String, Object> mat : materiales) {
@@ -365,7 +356,6 @@
                 <% } %>
             </div>
 
-            <!-- ==================== TAB MARKETPLACE ==================== -->
             <div id="tab-market" class="tab-panel">
                 <% if (productos != null && !productos.isEmpty()) {
                     for (Map<String, Object> prod : productos) {
@@ -402,7 +392,6 @@
                 <% } %>
             </div>
 
-            <!-- ==================== TAB VALORACIONES ==================== -->
             <div id="tab-val" class="tab-panel">
                 <% if (valoraciones != null && !valoraciones.isEmpty()) {
                     for (Map<String, Object> val : valoraciones) {
@@ -436,7 +425,6 @@
                 <% } %>
             </div>
 
-            <!-- ==================== TAB HISTORIAL ==================== -->
             <div id="tab-hist" class="tab-panel">
                 <p style="font-size:.85rem;color:#888;margin-bottom:14px;">
                     Tu historial persiste aunque cierres sesion. Muestra tus ultimas 80 acciones.
@@ -469,9 +457,8 @@
                 <% } %>
             </div>
 
-        </div><!-- /perfil-wrap -->
+        </div>
 
-        <!-- ====== MODAL EDITAR FORO ====== -->
         <div class="modal-overlay" id="modalForo">
             <div class="modal-box">
                 <h3>Editar publicacion</h3>
@@ -494,7 +481,6 @@
             </div>
         </div>
 
-        <!-- ====== MODAL EDITAR MARKETPLACE ====== -->
         <div class="modal-overlay" id="modalMarket">
             <div class="modal-box">
                 <h3>Editar producto</h3>
@@ -518,7 +504,6 @@
         </div>
 
         <script>
-            // Tabs
             function abrirTab(id, btn) {
                 document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('activo'));
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('activo'));
@@ -526,7 +511,6 @@
                 btn.classList.add('activo');
             }
 
-            // Modales
             function abrirModalForo(id, idCat, titulo, contenido) {
                 document.getElementById('mf-id').value = id;
                 document.getElementById('mf-cat').value = idCat;
@@ -545,18 +529,15 @@
             function cerrarModal(id) {
                 document.getElementById(id).classList.remove('abierto');
             }
-            // Cerrar modal al click fuera
             document.querySelectorAll('.modal-overlay').forEach(m => {
                 m.addEventListener('click', e => { if (e.target === m) m.classList.remove('abierto'); });
             });
 
-            // Auto-ocultar toasts
             ['toastOk','toastErr'].forEach(id => {
                 var el = document.getElementById(id);
                 if (el) setTimeout(() => el.style.opacity = '0', 3500);
             });
 
-            // Abrir tab correcto si viene de URL (ej: perfil.jsp?tab=hist)
             var tabParam = new URLSearchParams(window.location.search).get('tab');
             var tabMap = { foro: 'tab-foro', apuntes: 'tab-apuntes', material: 'tab-material',
                            market: 'tab-market', val: 'tab-val', hist: 'tab-hist' };

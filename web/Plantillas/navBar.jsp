@@ -25,8 +25,8 @@
         <li><a href="foritos.jsp">Foros</a></li>
         <li><a href="marketplace.jsp">MarketPlace</a></li>
         <li><a href="apuntes.jsp">Apuntes</a></li>
-        <li><a href="conocer.jsp">Conoce más</a></li>
         <li><a href="material.jsp">Material de Estudio</a></li>
-        <li><a href="perfil.jsp">Perfil</a></li>
+        <li><a href="conocer.jsp">Conoce más</a></li>
+        
     </ul>
 </nav>

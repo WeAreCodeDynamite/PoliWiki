@@ -432,17 +432,20 @@ if (archivoUrl != null && !archivoUrl.isEmpty()) {
                     </div>
 
                     <div id="seccion-academica">
-                        <label for="materiaSelect">Categoría del Foro</label>
-                        <select id="materiaSelect" name="id_materia">
-                            <option value="">Buscar o seleccionar materia</option>
-                            <% if (categories != null && !categories.isEmpty()) { 
-                                for (Map<String, Object> cat : categories) { %>
-                                    <option value="<%= cat.get("id_materia") %>"><%= cat.get("nombre_materia") %></option>
-                            <% } } else { %>
-                                <option value="2">Matemáticas</option>
-                                <option value="1">Estructuras de Datos</option>
-                            <% } %>
-                        </select>
+                        <label for="materiaSelect">Categoría de la publicacion</label>
+                        <select id="materiaSelect" name="id_categoria" required>
+    <option value="">Selecciona una categoría</option>
+
+    <% if (categories != null && !categories.isEmpty()) {
+        for (Map<String, Object> cat : categories) { %>
+
+        <option value="<%= cat.get("id_categoria") %>">
+            <%= cat.get("nombre") %>
+        </option>
+
+    <% }
+    } %>
+</select>
 
                         <label for="temasInput">Temas</label>
                         <input type="text" id="temasInput" name="temas" placeholder="Ingresa palabras clave o temas principales (ej. Cálculo, Límites)">

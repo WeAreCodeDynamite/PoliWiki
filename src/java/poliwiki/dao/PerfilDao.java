@@ -10,21 +10,8 @@ import java.util.List;
 import java.util.Map;
 import poliwiki.db.Database;
 
-/**
- * DAO del perfil de usuario.
- * Cubre: datos de perfil (compatible con Administrador), publicaciones de foro, 
- * apuntes, material de estudio, marketplace, valoraciones de profesores e historial de acciones.
- */
 public class PerfilDao {
 
-    // =========================================================================
-    // CONSULTA PRINCIPAL DE DATOS DE USUARIO
-    // =========================================================================
-
-    /**
-     * Obtiene los datos del perfil del usuario logueado.
-     * Utiliza LEFT JOIN para soportar administradores con id_carrera = NULL.
-     */
     public Map<String, Object> obtenerDatosPerfil(int idUsuario) throws SQLException {
         String sql = "SELECT u.id_usuario, u.nombres, u.apellido_paterno, u.apellido_materno, "
                    + "u.correo_institucional, u.boleta, r.nombre AS rol, COALESCE(ca.nombre, 'Sin Carrera') AS carrera "
@@ -37,11 +24,6 @@ public class PerfilDao {
         return resultado.isEmpty() ? null : resultado.get(0);
     }
 
-    // =========================================================================
-    // CONSULTAS DE LISTADO POR USUARIO
-    // =========================================================================
-
-    /** Publicaciones de foro (Pregunta / Discusión / Aviso, etc.) */
     public List<Map<String, Object>> listarPublicacionesUsuario(int idUsuario) throws SQLException {
         String sql = "SELECT p.id_publicacion, p.id_categoria, p.titulo, p.contenido, "
                 + "p.tipo_publicacion, p.estado, p.creado_en, c.nombre AS categoria "
@@ -107,11 +89,7 @@ public class PerfilDao {
         return consultar(sql, idUsuario);
     }
 
-    // =========================================================================
-    // ACCIONES DE ELIMINACIÓN (USUARIO OCULTA LO SUYO)
-    // =========================================================================
-
-    /** Oculta una publicación de foro del usuario */
+    
     public void eliminarForo(int idUsuario, int idPublicacion) throws SQLException {
         String sql = "UPDATE publicaciones_foro SET estado = 'oculta' WHERE id_publicacion = ? AND id_usuario = ?";
         ejecutarSimple(sql, idPublicacion, idUsuario);
@@ -141,11 +119,6 @@ public class PerfilDao {
         ejecutarSimple(sql, idValoracion, idUsuario);
     }
 
-    // =========================================================================
-    // ACCIONES DE ACTUALIZACIÓN
-    // =========================================================================
-
-    /** Actualiza título, contenido y categoría de una publicación */
     public void actualizarForo(int idUsuario, int idPublicacion, int idCategoria, String titulo, String contenido) throws SQLException {
         String sql = "UPDATE publicaciones_foro SET id_categoria = ?, titulo = ?, contenido = ?, estado = 'abierta' "
                 + "WHERE id_publicacion = ? AND id_usuario = ?";
@@ -160,7 +133,6 @@ public class PerfilDao {
         }
     }
 
-    /** Actualiza los datos comerciales de un artículo en el Marketplace */
     public void actualizarMarketplace(int idUsuario, int idItem, String titulo, String descripcion, String precio, String estado) throws SQLException {
         Double valor = (precio == null || precio.trim().isEmpty()) ? null : Double.valueOf(precio);
         String sql = "UPDATE marketplace_items SET titulo = ?, descripcion = ?, precio = ?, estado = ? "
@@ -177,9 +149,6 @@ public class PerfilDao {
         }
     }
 
-    // =========================================================================
-    // MÉTODOS AUXILIARES Y DE CONFIGURACIÓN BASE
-    // =========================================================================
 
     private List<Map<String, Object>> consultar(String sql, int idUsuario) throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
