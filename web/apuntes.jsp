@@ -166,14 +166,94 @@
                             </div>
                         </div>
 
-                        <% if (archivoUrl != null && !archivoUrl.isEmpty()) { %>
-                            <div class="card-adjunto-der">
-                                <div class="preview-pdf">
-                                    <span class="pdf-icon">📄</span>
-                                    <span class="pdf-tag">PDF / IMG</span>
-                                </div>
-                            </div>
-                        <% } %>
+                        <%
+if (archivoUrl != null && !archivoUrl.isEmpty()) {
+
+    String archivoLower = archivoUrl.toLowerCase();
+
+    boolean esImagen =
+        archivoLower.endsWith(".png") ||
+        archivoLower.endsWith(".jpg") ||
+        archivoLower.endsWith(".jpeg") ||
+        archivoLower.endsWith(".webp");
+
+    boolean esPdf =
+        archivoLower.endsWith(".pdf");
+%>
+
+<div class="card-adjunto-der" style="text-align:center;">
+
+    <% if (esImagen) { %>
+
+        <div class="preview-foto-muro">
+            <img src="<%= archivoUrl %>"
+                 alt="Imagen adjunta"
+                 style="width:120px;height:120px;object-fit:cover;border-radius:8px;">
+        </div>
+
+        <a href="<%= archivoUrl %>"
+           download
+           class="btn-descargar"
+           style="display:inline-block;
+                  margin-top:8px;
+                  padding:6px 12px;
+                  background:#800020;
+                  color:white;
+                  text-decoration:none;
+                  border-radius:6px;
+                  font-size:0.85rem;">
+            ⬇ Descargar Imagen
+        </a>
+
+    <% } else if (esPdf) { %>
+
+        <div class="preview-pdf">
+            <span class="pdf-icon">📄</span>
+            <span class="pdf-tag">PDF</span>
+        </div>
+
+        <a href="<%= archivoUrl %>"
+           download
+           class="btn-descargar"
+           style="display:inline-block;
+                  margin-top:8px;
+                  padding:6px 12px;
+                  background:#800020;
+                  color:white;
+                  text-decoration:none;
+                  border-radius:6px;
+                  font-size:0.85rem;">
+            ⬇ Descargar PDF
+        </a>
+
+    <% } else { %>
+
+        <div class="preview-pdf">
+            <span class="pdf-icon">📁</span>
+            <span class="pdf-tag">ARCHIVO</span>
+        </div>
+
+        <a href="<%= archivoUrl %>"
+           download
+           class="btn-descargar"
+           style="display:inline-block;
+                  margin-top:8px;
+                  padding:6px 12px;
+                  background:#800020;
+                  color:white;
+                  text-decoration:none;
+                  border-radius:6px;
+                  font-size:0.85rem;">
+            ⬇ Descargar Archivo
+        </a>
+
+    <% } %>
+
+</div>
+
+<%
+}
+%>
                     </div>
 
                     <div class="card-footer" style="display: flex; justify-content: space-between; align-items: center;">
@@ -280,7 +360,12 @@
                         <div class="upload-zone" onclick="document.getElementById('inputArchivo').click()" style="border: 2px dashed #cbd5e0; padding: 20px; text-align: center; cursor: pointer; border-radius: 6px; background: #f7fafc;">
                             <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: #a0aec0; margin-bottom: 10px;"></i>
                             <p id="textoArchivo" style="margin: 0; color: #4a5568;">Haz clic para seleccionar tus archivos (PDF, Imágenes)</p>
-                            <input type="file" id="inputArchivo" name="archivo_adjunto" style="display: none;" onchange="actualizarNombreArchivo(this)" />
+<input type="file"
+       id="inputArchivo"
+       name="archivo_adjunto"
+       accept=".pdf,.doc,.docx,.txt,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.webp"
+       style="display:none;"
+       onchange="actualizarNombreArchivo(this)" />
                         </div>
                     </div>
 

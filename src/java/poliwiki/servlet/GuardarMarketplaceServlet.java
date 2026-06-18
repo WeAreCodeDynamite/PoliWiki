@@ -109,10 +109,18 @@ public class GuardarMarketplaceServlet extends HttpServlet {
                 
             } else {
                 String fotoFinal = (archivoUrl != null) ? archivoUrl : "IMG/default-item.png";
-                
-                marketDao.crearItem(idUsuario, titulo, descripcionConTema, precio, fotoFinal, escuelaSeleccionada);
-                
-                infoDao.insertarPublicacion(1, idUsuario, titulo, textoConPrecio, "Marketplace", archivoUrl, tema);
+
+                // FIX: antes se creaba el item en marketplace_items y la publicación en
+                //      publicaciones_foro por separado, sin enlazarlos (id_publicacion quedaba NULL).
+                //      Esto rompía la edición desde informacion.jsp, porque
+                //      actualizarItemPorPublicacion busca por id_publicacion y nunca encontraba
+                //      la fila, dejando el precio "congelado" en marketplace.jsp.
+                //      Ahora se captura el id generado al insertar en publicaciones_foro y se
+                //      pasa a crearItem para enlazar ambos registros desde el inicio.
+                int nuevoIdPublicacion = infoDao.insertarPublicacionRetornandoId(
+                        1, idUsuario, titulo, textoConPrecio, "Marketplace", archivoUrl, tema);
+
+                marketDao.crearItem(idUsuario, titulo, descripcionConTema, precio, fotoFinal, escuelaSeleccionada, nuevoIdPublicacion);
                 
                 response.sendRedirect("marketplace.jsp?mensaje=Publicacion+creada+con+exito");
             }

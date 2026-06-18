@@ -11,9 +11,7 @@ import poliwiki.util.Conexion;
 
 public class ForoDao {
 
-    // =========================================================================
-    // SECCIÓN 1: MÉTODOS DEL FORO PRINCIPAL
-    // =========================================================================
+    
 
     public List<Map<String, Object>> listarCategorias() {
         List<Map<String, Object>> lista = new ArrayList<>();
@@ -36,52 +34,56 @@ public class ForoDao {
     }
 
     public List<Map<String, Object>> listarPublicaciones() {
-        List<Map<String, Object>> lista = new ArrayList<>();
+    List<Map<String, Object>> lista = new ArrayList<>();
+    
+    String sql = "SELECT p.*, " +
+                 "CONCAT(u.nombres, ' ', u.apellido_paterno, ' ', IFNULL(u.apellido_materno, '')) AS autor, " +
+                 "c.nombre AS nombre_carrera, " +
+                 "COUNT(DISTINCT r.id_respuesta) AS respuestas, " +
+                 "mi.precio AS precio, " +
+                 "mi.descripcion AS descripcion_limpia " +
+                 "FROM publicaciones_foro p " +
+                 "LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario " +
+                 "LEFT JOIN carreras c ON u.id_carrera = c.id_carrera " +
+                 "LEFT JOIN respuestas r ON p.id_publicacion = r.id_publicacion " +
+                 "LEFT JOIN marketplace_items mi ON mi.id_publicacion = p.id_publicacion " +
+                 "WHERE (p.estado IS NULL OR p.estado <> 'oculta') " +
+                 "GROUP BY p.id_publicacion, u.nombres, u.apellido_paterno, u.apellido_materno, c.nombre, mi.precio, mi.descripcion " +
+                 "ORDER BY p.creado_en DESC";
+                 
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
         
-        String sql = "SELECT p.*, " +
-                     "CONCAT(u.nombres, ' ', u.apellido_paterno, ' ', IFNULL(u.apellido_materno, '')) AS autor, " +
-                     "c.nombre AS nombre_carrera, " +
-                     "COUNT(r.id_respuesta) AS respuestas " +
-                     "FROM publicaciones_foro p " +
-                     "LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario " +
-                     "LEFT JOIN carreras c ON u.id_carrera = c.id_carrera " +
-                     "LEFT JOIN respuestas r ON p.id_publicacion = r.id_publicacion " +
-                     "WHERE (p.estado IS NULL OR p.estado <> 'oculta') " +
-                     "GROUP BY p.id_publicacion, u.nombres, u.apellido_paterno, u.apellido_materno, c.nombre " +
-                     "ORDER BY p.creado_en DESC";
-                     
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            Map<String, Object> fila = new HashMap<>();
+            fila.put("id_publicacion", rs.getInt("id_publicacion"));
+            fila.put("id_usuario", rs.getInt("id_usuario"));
+            fila.put("id_materia", rs.getObject("id_categoria"));
+            fila.put("titulo", rs.getString("titulo"));
+            fila.put("contenido", rs.getString("contenido"));
+            fila.put("tipo_publicacion", rs.getString("tipo_publicacion"));
+            fila.put("archivo_url", rs.getString("archivo_url"));
+            fila.put("temas", rs.getString("temas"));
+            fila.put("precio", rs.getObject("precio"));
+            fila.put("descripcion_limpia", rs.getString("descripcion_limpia"));
             
-            while (rs.next()) {
-                Map<String, Object> fila = new HashMap<>();
-                fila.put("id_publicacion", rs.getInt("id_publicacion"));
-                fila.put("titulo", rs.getString("titulo"));
-                fila.put("contenido", rs.getString("contenido"));
-                fila.put("tipo_publicacion", rs.getString("tipo_publicacion"));
-                fila.put("archivo_url", rs.getString("archivo_url"));
-                fila.put("temas", rs.getString("temas"));
-                
-                fila.put("autor", rs.getString("autor") != null ? rs.getString("autor").trim().replaceAll("\\s+", " ") : "Anónimo");
-                fila.put("nombre_carrera", rs.getString("nombre_carrera") != null ? rs.getString("nombre_carrera") : "Sin carrera");
-                fila.put("respuestas", rs.getInt("respuestas")); 
-                lista.add(fila);
-            }
-        } catch (Exception e) {
-            System.err.println("Error en ForoDao.listarPublicaciones: " + e.getMessage());
-            e.printStackTrace();
+            fila.put("autor", rs.getString("autor") != null ? rs.getString("autor").trim().replaceAll("\\s+", " ") : "Anónimo");
+            fila.put("nombre_carrera", rs.getString("nombre_carrera") != null ? rs.getString("nombre_carrera") : "Sin carrera");
+            fila.put("respuestas", rs.getInt("respuestas")); 
+            lista.add(fila);
         }
-        return lista;
+    } catch (Exception e) {
+        System.err.println("Error en ForoDao.listarPublicaciones: " + e.getMessage());
+        e.printStackTrace();
     }
+    return lista;
+}
 
-    // =========================================================================
-    // CORRECCIÓN EN MÉTODO: Filtrar y rellenar correctamente para la vista de Foros
-    // =========================================================================
+    
     public List<Map<String, Object>> listarPreguntas() throws Exception {
         List<Map<String, Object>> lista = new ArrayList<>();
         
-        // SQL alineado con tu base de datos real (publicaciones_foro) y contando respuestas
         String sql = "SELECT p.*, " +
                      "CONCAT(u.nombres, ' ', u.apellido_paterno, ' ', IFNULL(u.apellido_materno, '')) AS autor, " +
                      "c.nombre AS nombre_carrera, " +
@@ -121,9 +123,7 @@ public class ForoDao {
         return lista;
     }
 
-    // =========================================================================
-    // NUEVO MÉTODO AGREGADO: Necesario para que 'foroDetalle.jsp' pueda abrirse
-    // =========================================================================
+  
     public Map<String, Object> obtenerPublicacionPorId(int idPublicacion) {
         String sql = "SELECT p.*, " +
                      "CONCAT(u.nombres, ' ', u.apellido_paterno, ' ', IFNULL(u.apellido_materno, '')) AS autor, " +
@@ -163,10 +163,6 @@ public class ForoDao {
         return null;
     }
 
-    // =========================================================================
-    // SECCIÓN 3: MÉTODOS DE COMENTARIOS Y RESPUESTAS
-    // =========================================================================
-
     public boolean insertarRespuesta(int idPublicacion, int idUsuario, String contenido) {
         String sql = "INSERT INTO respuestas (id_publicacion, id_usuario, contenido) VALUES (?, ?, ?)";
         try (Connection con = Conexion.getConexion();
@@ -186,7 +182,6 @@ public class ForoDao {
     public List<Map<String, Object>> listarRespuestasPorPublicacion(int idPublicacion) {
     List<Map<String, Object>> lista = new ArrayList<>();
     
-    // CORRECCIÓN: El JOIN de carreras ahora apunta a u.id_carrera en lugar de r.id_carrera
     String sql = "SELECT r.*, " +
                  "CONCAT(u.nombres, ' ', u.apellido_paterno, ' ', IFNULL(u.apellido_materno, '')) AS autor, " +
                  "c.nombre AS nombre_carrera " +

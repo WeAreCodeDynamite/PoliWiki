@@ -489,12 +489,10 @@
 
             function cerrarModalExito() {
                 modalExito.style.display = 'none';
-                // Limpiar parámetros de la URL para evitar re-pops al actualizar
                 const limpiaUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.pushState({path: limpiaUrl}, '', limpiaUrl);
             }
 
-            // Abrir formulario para una nueva publicación (Limpio)
             btnAbrir.addEventListener('click', () => {
                 if (isLoggedIn) {
                     document.getElementById('tituloModalForm').innerText = "Crear Nueva Publicación";
@@ -507,7 +505,6 @@
                 }
             });
 
-            // Función para rellenar campos y abrir modal en Modo Edición
             function abrirModalEditar(elemento) {
                 const id = elemento.getAttribute('data-id');
                 const titulo = elemento.getAttribute('data-titulo');
@@ -535,7 +532,6 @@
                 modalWarning.style.display = 'none';
             });
 
-            // Cerrar modales clickeando afuera
             window.addEventListener('click', (e) => {
                 if (e.target === modalPregunta) modalPregunta.style.display = 'none';
                 if (e.target === modalWarning) modalWarning.style.display = 'none';
@@ -543,7 +539,6 @@
                 if (e.target === modalExito) cerrarModalExito();
             });
 
-            // Buscador en tiempo real
             const inputBusqueda = document.getElementById('buscarPregunta');
             inputBusqueda.addEventListener('keyup', function() {
                 const filtro = this.value.toLowerCase().trim();

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import poliwiki.dao.MaterialDao;
+import poliwiki.dao.MarketplaceDao; // <-- Nuevo import agregado
 import poliwiki.model.Usuario;
 
 @WebServlet(name = "EliminarPublicacionServlet", urlPatterns = {"/EliminarPublicacionServlet"})
@@ -43,6 +44,14 @@ public class EliminarPublicacionServlet extends HttpServlet {
                 boolean eliminado = materialDao.eliminarPublicacion(idPublicacion);
                 
                 if (eliminado) {
+                    // ✅ Intentar eliminar también de Marketplace si existe ahí
+                    try {
+                        MarketplaceDao marketDao = new MarketplaceDao();
+                        marketDao.eliminarItemPorPublicacion(idPublicacion);
+                    } catch (Exception ex) {
+                        System.err.println("Advertencia: no se pudo limpiar marketplace: " + ex.getMessage());
+                    }
+
                     response.sendRedirect(origen + "?mensaje=EliminadoCorrectamente");
                 } else {
                     response.sendRedirect(origen + "?error=NoSePudoEliminar");

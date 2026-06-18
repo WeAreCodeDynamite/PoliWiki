@@ -471,3 +471,14 @@ body {
 .btn-accion-eliminar:hover {
     background-color: #fff5f5;
 }
+.preview-foto-muro img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.btn-descargar:hover {
+    opacity: 0.9;
+}
