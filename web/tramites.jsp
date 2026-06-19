@@ -23,6 +23,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Trámites - PoliWiki</title>
+        <link rel="stylesheet" href="CSS/fontawesome/css/all.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
         <link href="CSS/tramites.css" rel="stylesheet" />
         <style>

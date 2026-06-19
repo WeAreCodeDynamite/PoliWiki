@@ -38,6 +38,7 @@
         <title>Eventos - PoliWiki</title>
         <link href="CSS/estiloBase.css" rel="stylesheet" />
         <link href="CSS/eventos.css" rel="stylesheet" />
+        <link rel="stylesheet" href="CSS/fontawesome/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
         
